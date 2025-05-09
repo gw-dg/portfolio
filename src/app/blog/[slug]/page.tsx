@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+// Blog post data
 const blogPosts = [
   {
     id: 1,
@@ -64,7 +65,13 @@ const getBlogPostBySlug = (slug: string) => {
   return blogPosts.find((post) => post.slug === slug);
 };
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
+type Props = {
+  params: {
+    slug: string;
+  };
+};
+
+export default function Page({ params }: Props) {
   const post = getBlogPostBySlug(params.slug);
 
   if (!post) {

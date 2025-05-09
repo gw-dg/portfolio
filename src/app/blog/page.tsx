@@ -65,7 +65,7 @@ const blogPosts = [
   },
 ];
 
-export default function BlogPage() {
+export default function Page() {
   return (
     <div className="relative min-h-screen w-full overflow-hidden text-white">
       <AnimatedBackground />
