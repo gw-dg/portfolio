@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 // This would typically come from a CMS or markdown files
-const getBlogPost = (slug: string) => {
+const getBlogPost = () => {
   return {
     title: "Building a Minimalist Portfolio with Next.js and Tailwind",
     description:
@@ -58,8 +58,8 @@ const getBlogPost = (slug: string) => {
   };
 };
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = getBlogPost(params.slug);
+export default function BlogPostPage({}: { params: { slug: string } }) {
+  const post = getBlogPost();
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden text-white">
