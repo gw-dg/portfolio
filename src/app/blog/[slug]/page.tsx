@@ -2,15 +2,18 @@ import AnimatedBackground from "@/components/animated-background";
 import NavBar from "@/components/nav-bar";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
-// This would typically come from a CMS or markdown files
-const getBlogPost = () => {
-  return {
+const blogPosts = [
+  {
+    id: 1,
     title: "Building a Minimalist Portfolio with Next.js and Tailwind",
     description:
       "Learn how to create a clean, minimalist portfolio website using Next.js and Tailwind CSS.",
     date: "May 9, 2025",
     readTime: "5 min read",
+    slug: "building-minimalist-portfolio",
+    tags: ["Next.js", "Tailwind CSS", "Web Design"],
     content: `
       <p>
         In this tutorial, we'll walk through the process of creating a minimalist portfolio website using Next.js and Tailwind CSS. We'll focus on clean design, performance, and accessibility.
@@ -54,12 +57,19 @@ const getBlogPost = () => {
         By following these steps, you'll have a beautiful, minimalist portfolio that showcases your work effectively. Remember, in minimalist design, less is more. Focus on what's essential and remove everything else.
       </p>
     `,
-    tags: ["Next.js", "Tailwind CSS", "Web Design"],
-  };
+  },
+];
+
+const getBlogPostBySlug = (slug: string) => {
+  return blogPosts.find((post) => post.slug === slug);
 };
 
-export default function BlogPostPage({}: { params: { slug: string } }) {
-  const post = getBlogPost();
+export default function BlogPostPage({ params }: { params: { slug: string } }) {
+  const post = getBlogPostBySlug(params.slug);
+
+  if (!post) {
+    notFound();
+  }
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden text-white">
