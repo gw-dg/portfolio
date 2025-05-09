@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import ThemeToggle from "@/components/theme-toggle";
 
 export default function NavBar() {
   const pathname = usePathname();
@@ -19,27 +20,29 @@ export default function NavBar() {
 
   return (
     <header className="flex items-center justify-between py-4">
-      <Link href="/" className="text-2xl font-bold">
+      <Link href="/" className="text-2xl font-bold dark:text-white text-black">
         <span className="font-serif italic">GwdG</span>
       </Link>
-      {/* <button
-        onClick={() => router.back()}
-        className="backdrop-blur-md bg-white/10 border border-white/20 text-white px-4 py-2 rounded-xl text-base font-semibold shadow-md transition hover:bg-white/20 hover:border-white/30 hover:scale-105">
-        ←
-      </button> */}
-      <nav className="hidden space-x-6 md:flex">
-        {navItems.map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            className={cn(
-              "hover:text-gray-300 transition-colors",
-              pathname === item.href && "text-white font-medium"
-            )}>
-            {item.name}
-          </Link>
-        ))}
-      </nav>
+
+      <div className="flex items-center gap-6">
+        <nav className="hidden space-x-6 md:flex">
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              target={item.external ? "_blank" : undefined}
+              rel={item.external ? "noopener noreferrer" : undefined}
+              className={cn(
+                "dark:hover:text-gray-300 hover:text-gray-600 transition-colors dark:text-white text-black",
+                pathname === item.href && "font-medium"
+              )}>
+              {item.name}
+            </Link>
+          ))}
+        </nav>
+
+        <ThemeToggle />
+      </div>
     </header>
   );
 }

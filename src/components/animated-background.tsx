@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useTheme } from "@/components/theme-provider";
 
 export default function AnimatedBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -21,70 +23,116 @@ export default function AnimatedBackground() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Gradient animation variables
-    let gradientAngle = 0;
-    const gradientSpeed = 0.001; // Reduced speed for slower animation
-    const colors = [
-      { r: 5, g: 5, b: 15 }, // Darker colors
-      { r: 10, g: 10, b: 30 },
-      { r: 20, g: 5, b: 35 },
-      { r: 3, g: 3, b: 15 },
-    ];
+    // Create dots
+    const dots: {
+      x: number;
+      y: number;
+      radius: number;
+      opacity: number;
+      speed: number;
+      direction: number;
+    }[] = [];
+
+    const createDots = () => {
+      const dotCount = Math.floor((canvas.width * canvas.height) / 15000); // Adjust density
+
+      for (let i = 0; i < dotCount; i++) {
+        dots.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 0.8 + 0.2, // Smaller dots between 0.2 and 1.0
+          opacity: Math.random() * 0.35 + 0.05, // Varying opacity
+          speed: Math.random() * 0.3 + 0.1, // Movement speed
+          direction: Math.random() * Math.PI * 2, // Random direction
+        });
+      }
+    };
+
+    createDots();
 
     // Animation function
     const animate = () => {
-      // Update gradient angle
-      gradientAngle += gradientSpeed;
-      if (gradientAngle >= 2 * Math.PI) {
-        gradientAngle = 0;
+      const isDarkTheme = document.documentElement.classList.contains("dark");
+
+      // Set background based on theme
+      if (isDarkTheme) {
+        // AMOLED black background for dark theme
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Add subtle gradient overlay for dark theme
+        const darkGradient = ctx.createRadialGradient(
+          canvas.width / 2,
+          canvas.height / 2,
+          0,
+          canvas.width / 2,
+          canvas.height / 2,
+          canvas.width * 0.8
+        );
+
+        darkGradient.addColorStop(0, "rgba(10, 10, 20, 0.3)");
+        darkGradient.addColorStop(0.5, "rgba(5, 5, 15, 0.1)");
+        darkGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+
+        ctx.fillStyle = darkGradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      } else {
+        // White background for light theme
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Add subtle gradient overlay for light theme
+        const lightGradient = ctx.createRadialGradient(
+          canvas.width / 2,
+          canvas.height / 2,
+          0,
+          canvas.width / 2,
+          canvas.height / 2,
+          canvas.width * 0.8
+        );
+
+        lightGradient.addColorStop(0, "rgba(240, 240, 250, 0.3)");
+        lightGradient.addColorStop(0.5, "rgba(230, 230, 245, 0.1)");
+        lightGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+
+        ctx.fillStyle = lightGradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
 
-      // Calculate gradient positions
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      const radius = Math.max(canvas.width, canvas.height);
+      // Animate dots
+      dots.forEach((dot) => {
+        // Update position with slight movement
+        dot.x += Math.cos(dot.direction) * dot.speed;
+        dot.y += Math.sin(dot.direction) * dot.speed;
 
-      const x1 = centerX + Math.cos(gradientAngle) * radius;
-      const y1 = centerY + Math.sin(gradientAngle) * radius;
-      const x2 = centerX + Math.cos(gradientAngle + Math.PI) * radius;
-      const y2 = centerY + Math.sin(gradientAngle + Math.PI) * radius;
+        // Change direction occasionally
+        if (Math.random() < 0.01) {
+          dot.direction += (Math.random() - 0.5) * 0.5;
+        }
 
-      // Create gradient
-      const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
-      gradient.addColorStop(
-        0,
-        `rgb(${colors[0].r}, ${colors[0].g}, ${colors[0].b})`
-      );
-      gradient.addColorStop(
-        0.33,
-        `rgb(${colors[1].r}, ${colors[1].g}, ${colors[1].b})`
-      );
-      gradient.addColorStop(
-        0.66,
-        `rgb(${colors[2].r}, ${colors[2].g}, ${colors[2].b})`
-      );
-      gradient.addColorStop(
-        1,
-        `rgb(${colors[3].r}, ${colors[3].g}, ${colors[3].b})`
-      );
+        // Slightly adjust opacity for twinkling effect
+        dot.opacity += (Math.random() - 0.5) * 0.01;
+        dot.opacity = Math.max(0.05, Math.min(0.4, dot.opacity));
 
-      // Fill background
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // Wrap around screen edges
+        if (dot.x < 0) dot.x = canvas.width;
+        if (dot.x > canvas.width) dot.x = 0;
+        if (dot.y < 0) dot.y = canvas.height;
+        if (dot.y > canvas.height) dot.y = 0;
 
-      // Add subtle noise/stars effect - reduced number and slower appearance
-      for (let i = 0; i < 50; i++) {
-        // Reduced from 100 to 50 stars
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        const size = Math.random() * 1.2;
-        const opacity = Math.random() * 0.4; // Reduced opacity
+        // Draw dot with color based on theme
+        if (isDarkTheme) {
+          // White dots for dark theme
+          ctx.fillStyle = `rgba(255, 255, 255, ${dot.opacity})`;
+        } else {
+          // Darker dots for light theme (increased contrast)
+          ctx.fillStyle = `rgba(0, 0, 40, ${dot.opacity * 1.5})`;
+        }
 
-        ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
         ctx.beginPath();
-        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
         ctx.fill();
-      }
+      });
 
       requestAnimationFrame(animate);
     };
@@ -96,7 +144,7 @@ export default function AnimatedBackground() {
     return () => {
       window.removeEventListener("resize", resizeCanvas);
     };
-  }, []);
+  }, [theme]);
 
   return (
     <canvas

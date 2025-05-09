@@ -78,7 +78,7 @@ export default function ProjectsPage() {
   const otherProjects = projects.filter((project) => !project.featured);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden text-white">
+    <div className="relative min-h-screen w-full overflow-hidden">
       <AnimatedBackground />
 
       <div className="container relative z-10 mx-auto flex min-h-screen max-w-4xl flex-col px-4 py-8">
@@ -93,12 +93,10 @@ export default function ProjectsPage() {
               {featuredProjects.map((project) => (
                 <Card
                   key={project.id}
-                  className="bg-black/50 border-white/10 text-white">
+                  className="dark:border-white/10 border border-border bg-card transition-colors">
                   <CardHeader>
                     <CardTitle>{project.title}</CardTitle>
-                    <CardDescription className="text-gray-300">
-                      {project.description}
-                    </CardDescription>
+                    <CardDescription>{project.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
@@ -150,12 +148,10 @@ export default function ProjectsPage() {
               {otherProjects.map((project) => (
                 <Card
                   key={project.id}
-                  className="bg-black/50 border-white/10 text-white">
+                  className="dark:border-white/10 border border-border bg-card transition-colors">
                   <CardHeader>
                     <CardTitle>{project.title}</CardTitle>
-                    <CardDescription className="text-gray-300">
-                      {project.description}
-                    </CardDescription>
+                    <CardDescription>{project.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
@@ -191,7 +187,7 @@ export default function ProjectsPage() {
                           size="sm"
                           className="border-white/20 hover:bg-white/10 hover:text-white">
                           <ExternalLink className="mr-2 h-4 w-4" />
-                          live
+                          Live
                         </Button>
                       </Link>
                     )}

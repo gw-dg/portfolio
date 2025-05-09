@@ -80,14 +80,14 @@ export default function Page() {
             {blogPosts.map((post) => (
               <Card
                 key={post.id}
-                className="bg-black/50 border-white/10 text-white hover:bg-black/70 transition-colors">
+                className="dark:border-white/10 border border-border bg-card transition-colors">
                 <Link href={`/blog/${post.slug}`}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-xl">{post.title}</CardTitle>
-                      <ArrowRight className="h-5 w-5 text-gray-400" />
+                      <ArrowRight className="h-5 w-5 text-muted-foreground" />
                     </div>
-                    <CardDescription className="text-gray-300">
+                    <CardDescription className="text-muted-foreground">
                       {post.description}
                     </CardDescription>
                   </CardHeader>
@@ -96,13 +96,13 @@ export default function Page() {
                       {post.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="rounded-md bg-white/10 px-2 py-1 text-xs">
+                          className="rounded-md bg-secondary px-2 py-1 text-xs text-secondary-foreground">
                           {tag}
                         </span>
                       ))}
                     </div>
                   </CardContent>
-                  <CardFooter className="text-sm text-gray-400">
+                  <CardFooter className="text-sm text-muted-foreground">
                     <div className="flex items-center gap-3">
                       <span>{post.date}</span>
                       <span>•</span>
