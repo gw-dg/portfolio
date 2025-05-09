@@ -25,7 +25,7 @@ export default function NavBar() {
       </Link>
 
       <div className="flex items-center gap-6">
-        <nav className="hidden space-x-6 md:flex">
+        <nav className="space-x-6 md:flex">
           {navItems.map((item) => (
             <Link
               key={item.name}

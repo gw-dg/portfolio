@@ -40,7 +40,7 @@ export default function AnimatedBackground() {
         dots.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          radius: Math.random() * 0.8 + 0.2, // Smaller dots between 0.2 and 1.0
+          radius: Math.random() * 0.8 + 0.7, // Smaller dots between 0.2 and 1.0
           opacity: Math.random() * 0.35 + 0.05, // Varying opacity
           speed: Math.random() * 0.3 + 0.1, // Movement speed
           direction: Math.random() * Math.PI * 2, // Random direction
