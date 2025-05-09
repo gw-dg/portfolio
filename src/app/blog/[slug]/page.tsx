@@ -71,7 +71,7 @@ type Props = {
   };
 };
 
-export default function Page({ params }: Props) {
+export default function Page({ params }: { params: { slug: string } }) {
   const post = getBlogPostBySlug(params.slug);
 
   if (!post) {
