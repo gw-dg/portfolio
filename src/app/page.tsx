@@ -1,14 +1,5 @@
 import Link from "next/link";
-import {
-  Github,
-  Instagram,
-  Linkedin,
-  LinkedinIcon,
-  Mail,
-  Twitter,
-  Youtube,
-  Zap,
-} from "lucide-react";
+import { Github, LinkedinIcon, Mail, Twitter, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AnimatedBackground from "@/components/animated-background";
 import SocialLink from "@/components/social-link";
@@ -50,8 +41,8 @@ export default function Home() {
           <h1 className="mb-6 text-5xl font-bold">Bhaskar Jha</h1>
 
           <p className="mb-8 text-xl">
-            Hey! I'm a passionate developer and designer focused on creating
-            beautiful, functional experiences.
+            Hey! I&apos;m a passionate developer and designer focused on
+            creating beautiful, functional experiences.
           </p>
 
           <div className="mb-8">

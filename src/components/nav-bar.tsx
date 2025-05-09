@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 export default function NavBar() {
-  const router = useRouter();
   const pathname = usePathname();
 
   const navItems = [
