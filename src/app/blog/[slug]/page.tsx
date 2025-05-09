@@ -65,8 +65,14 @@ const getBlogPostBySlug = (slug: string) => {
   return blogPosts.find((post) => post.slug === slug);
 };
 
-export default function Page({ params }: { params: { slug: string } }) {
-  const post = getBlogPostBySlug(params.slug);
+// Following the exact syntax from the documentation
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const post = getBlogPostBySlug(slug);
 
   if (!post) {
     notFound();
