@@ -65,12 +65,6 @@ const getBlogPostBySlug = (slug: string) => {
   return blogPosts.find((post) => post.slug === slug);
 };
 
-type Props = {
-  params: {
-    slug: string;
-  };
-};
-
 export default function Page({ params }: { params: { slug: string } }) {
   const post = getBlogPostBySlug(params.slug);
 
