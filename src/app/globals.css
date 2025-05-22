@@ -23,6 +23,14 @@
   --input: 214.3 31.8% 91.4%;
   --ring: 222 84% 4.9%;
   --radius: 0.5rem;
+  --prose-body: 222 47.4% 11.2%;
+  --prose-heading: 222 47.4% 11.2%;
+  --prose-lead: 222 47.4% 11.2%;
+  --prose-links: 240 60% 50%;
+  --prose-bold: 222 47.4% 11.2%;
+  --prose-code: 240 50% 45%;
+  --prose-quote: 215 20.2% 65.1%;
+  --prose-quote-border: 214.3 31.8% 91.4%;
 }
 
 /* Dark theme variables */
@@ -46,6 +54,14 @@
   --border: 217 32.6% 17.5%;
   --input: 217 32.6% 17.5%;
   --ring: 212.7 26.8% 83.9%;
+  --prose-body: 210 40% 98%;
+  --prose-heading: 210 40% 98%;
+  --prose-lead: 210 40% 98%;
+  --prose-links: 210 100% 70%;
+  --prose-bold: 210 40% 98%;
+  --prose-code: 210 100% 70%;
+  --prose-quote: 215 20.2% 65.1%;
+  --prose-quote-border: 217 32.6% 17.5%;
 }
 
 /* Color scheme indicators */
@@ -153,4 +169,49 @@ html:not(.dark) [class*="bg-white/"] {
 
 .animate-accordion-up {
   animation: accordion-up 0.2s ease-out;
+}
+
+/* ----------------------------------------
+   🌗 Theme Utility Mixins (Reusable Classes)
+---------------------------------------- */
+
+/* Card style */
+.theme-card {
+  @apply bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] border border-[hsl(var(--border))];
+}
+
+/* On hover, lighten the card (dark mode accent or light mode muted) */
+.theme-card-hover {
+  @apply transition hover:bg-[hsl(var(--muted))] dark:hover:bg-[hsl(var(--accent))];
+}
+
+/* Body background */
+.theme-bg {
+  @apply bg-[hsl(var(--background))] text-[hsl(var(--foreground))];
+}
+
+/* Secondary badge (e.g. blog tags) */
+.theme-badge {
+  @apply bg-[hsl(var(--secondary))] text-[hsl(var(--secondary-foreground))] text-xs px-2 py-1 rounded-md;
+}
+
+/* Primary button */
+.theme-btn {
+  @apply bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] px-4 py-2 rounded-md hover:opacity-90 transition;
+}
+
+/* Title/headline */
+.theme-title {
+  @apply text-4xl font-bold text-[hsl(var(--foreground))];
+}
+
+/* Text-muted */
+.theme-muted {
+  @apply text-[hsl(var(--muted-foreground))];
+}
+
+/* Ensure the animated canvas stays visible behind content */
+canvas.fixed.-z-10 {
+  pointer-events: none;
+  mix-blend-mode: normal; /* or 'lighten', 'screen', etc. for cool effects */
 }

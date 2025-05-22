@@ -11,7 +11,10 @@ export default function SocialLink({ href, icon, label }: SocialLinkProps) {
   return (
     <Link
       href={href}
-      className="flex items-center gap-2 dark:bg-white/10 bg-gray-200 dark:hover:bg-white/15 hover:bg-gray-300 px-4 py-2 rounded-md transition-colors dark:text-white text-gray-900"
+      className="flex items-center gap-2 px-4 py-2 rounded-md transition-colors 
+                 bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] 
+                 hover:bg-[hsl(var(--muted))] dark:hover:bg-[hsl(var(--accent))] 
+                 border border-[hsl(var(--border))]"
       target="_blank"
       rel="noopener noreferrer">
       {icon}

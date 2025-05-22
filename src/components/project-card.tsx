@@ -12,7 +12,7 @@ export default function ProjectCard({ name, icon, link }: ProjectCardProps) {
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-2 bg-white/10 hover:bg-white/15 px-3 py-1 rounded-full text-sm transition-colors cursor-pointer">
+      className="flex items-center gap-2 bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] hover:bg-[hsl(var(--muted))] dark:hover:bg-[hsl(var(--accent))] px-3 py-1 rounded-full text-sm transition-colors cursor-pointer border border-[hsl(var(--border))]">
       {icon}
       <span>{name}</span>
     </a>

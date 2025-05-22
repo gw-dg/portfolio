@@ -1,0 +1,683 @@
+# Learn (almost) every Number Theory concept you'll need to know for Competitive Programming from a single problem!
+
+To understand these concepts, you just need basic arithmetic knowledge, typically covered up to 10th-grade mathematics.
+
+I'll start straight away by introducing the problem. First, the easier version, and then we'll move to the harder version, which is just the easier version with increased constraints.
+
+**Problem Statement** – Given an array $A$ of size $N$ and a positive integer $M$,
+perform these steps:
+
+- First, create array $B$ such that $B_i = A_i \times M!$ ($M!$ denotes the [factorial](https://en.wikipedia.org/wiki/Factorial) of $M$).
+- Then, for each element in array $B$, calculate $F(B_i)$, where $F(x)$ represents the number of divisors of $x$.
+
+Since these values can be large, output each $F(B_i) \bmod (1e9+7)$.
+
+- Output $N$ space-separated integers representing $F(B_i) \bmod (1e9+7)$.
+
+### Constraints
+
+- $1 \leq N \leq 1e5$
+- $1 \leq M \leq 100$
+- $1 \leq A_i \leq 1e5$
+
+---
+
+What's the first thing that comes to your mind after reading the problem statement?
+Naturally, it might be that we can multiply $M!$ with each $A_i$, factorize it, and count the number of divisors. Technically, that's the core idea, but there are a few twists..
+
+Let's point out a few things:
+
+- How will you calculate $M!$ as the maximum value $M$ can take is 100? That's a very, very huge value. (For reference, $20! = 2432902008176640000$)
+- How will you factorize each number?
+- How do you count the number of divisors?
+
+Let's make one thing clear: we can never calculate $M!$ directly, as we'd need supercomputers for that and still wouldn't be able to compute it. So, how can one solve this problem?
+
+---
+
+**Let's start from the basics:**
+
+- What is a divisor of a number $x$?
+
+If $x$ is **divisible by** $d$ without leaving a remainder, then $d$ is called a **divisor of $x$**. Factor and divisor both mean the same thing.
+
+- What is **Factorization** and what is **Prime Factorization**?
+
+**Factorization** is the process of breaking down a number into a product of other numbers, called **factors**, which when multiplied together give the original number.
+_For example:_ $12=2\times2\times3$
+
+**Prime factorization** is a special kind of factorization where the number is expressed as a product of **prime numbers** only.
+_For example:_ $36 = 2^{2} \times 3^{2}$
+
+- **How to find all divisors of a number $x$?**
+  We can iterate from $1$ to $x$ and check if $x$ is divisible by that number or not. But this method is usually not feasible because we sometimes deal with very big numbers like $1e9$, where the time complexity will reach $O(N)$.
+
+- **How can we improve time complexity then?**
+
+  If we check carefully:
+
+- The **smallest factor** of any number $x$ (greater than 1 and even) will always be 2.
+- The **largest factor**, excluding $x$ itself, will always be at most $\frac{x}{2}$.
+- Great, we've reduced time complexity from $O(N)$ to $O(N/2)$.
+
+  **_For example:_**  
+  Take 48: its largest factor is 24. After that, no number (other than 48 itself) divides it evenly.
+
+- Another important point: **factors always appear in pairs**.
+
+  Let's look at 48 again. Its factor pairs are:
+
+  $$
+  (2, 24),\ (3, 16),\ (4, 12),\ (6, 8),\ (8, 6),\ (12, 4),\ (16, 3),\ (24, 2)
+  $$
+
+  - Notice that once the factor on the left side of the pair exceeds $\sqrt{48}$, the pair starts to repeat in reverse.
+  - So instead of checking up to $x/2$, we only need to check up to $\sqrt{x}$.
+
+Below is a code snippet to find all divisors of a number in C++:
+
+```cpp
+void all_divisors(int num) {
+    vector<int> ans;
+    for (int i = 2; i * i <= num; i++) {
+        if (num % i == 0) {
+            ans.push_back(i);
+            if (num / i != i) ans.push_back(num / i);
+        }
+    }
+}
+```
+
+- I'll also share a code snippet for how to find the prime factorization of a number by tweaking the above method:
+
+```cpp
+map<long long, int> primeFactorize(long long n) {
+    map<long long, int> factors;
+
+    // Divide by 2 until it's odd
+    while (n % 2 == 0) {
+        factors[2]++;
+        n /= 2;
+    }
+
+    // Try odd divisors from 3 up to sqrt(n)
+    for (long long i = 3; i * i <= n; i += 2) {
+        while (n % i == 0) {
+            factors[i]++;
+            n /= i;
+        }
+    }
+
+    // If n is still greater than 1, it's a prime
+    if (n > 1) {
+        factors[n]++;
+    }
+
+    return factors;
+}
+```
+
+The time complexity of this prime factorization is $O(\sqrt{N})$ only.
+
+Can we improve it?
+Yes, by factorization using the _Sieve of Eratosthenes_.
+
+**What is the _Sieve of Eratosthenes_?**
+Sometimes, while dealing with some problems, we have to check if a number is prime or not. One way is to find all its divisors using the above-mentioned method. But this method is useful in cases with queries, due to its time complexity being $O(\sqrt{N})$. So, we use the Sieve of Eratosthenes method for checking if a number is prime or not in $O(1)$.
+
+```cpp
+// For finding if a number is prime or not
+void sieve() {
+    vector<int> primes(1e7 + 1, 1); // mark all nums as 1
+    for (int i = 2; i * i <= 1e7 + 1; i++) {
+        if (primes[i]) {
+            for (int j = i * i; j <= 1e7 + 1; j += i) {
+                primes[j] = 0;
+            }
+        }
+    }
+}
+// Time Complexity: O(N*log(log(N)))
+```
+
+The algorithm itself is pretty simple: we mark all numbers as _prime_ (1) initially. Then, for every number, we mark its multiples as _not prime_ (0).
+Why is its time complexity $O(N \log \log N)$? It's kind of tricky to prove, but to give a simple gist:
+
+- We iterate from $2$ to $N$. That's $O(N)$ time complexity.
+- For each number $i$, we iterate over its multiples.
+- In $N$, there are $N/i$ multiples of $i$, so basically the number of times the loop runs is
+  $$
+  \frac{N}{2} + \frac{N}{3} + \frac{N}{4} + \cdots + \frac{N}{N}
+  $$
+  and
+  $$
+  N \times \left(\frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \cdots + \frac{1}{N}\right)
+  $$
+- This series is called the Harmonic Series:
+
+  $$
+  H_n = \left(\frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \cdots + \frac{1}{N}\right)
+  $$
+
+- And the sum over primes is:
+  $$
+  \sum_{p = 1}^{N} \frac{1}{p} \approx \log \log N
+  $$
+  Hence, the Sieve's time complexity is $O(N \log \log N)$.
+
+Okay, we know the Sieve of Eratosthenes now, but we still don't know how to use it for prime factorization.
+
+- Well, there is a pretty neat trick. We'll modify the Sieve array into an SPF array, which is basically the _smallest prime factor_ of a number.
+- Now, to find the prime factorization of a number $x$, we'll do the following steps:
+  - Divide $x$ by $lpf[x]$, which is basically its lowest prime factor.
+  - Now, repeat step 1 again for $(x/lpf[x])$, which is the new number we obtained after dividing $x$ by $lpf[x]$.
+  - Keep doing this process until the number becomes 1.
+  - At most, we can divide a number $\log_2(X)$ times. Hence, the prime factorization time complexity decreases significantly.
+
+```cpp
+// 1) Fill Lowest Prime Factor of number array
+// 2) For a number X, keep dividing by itself by lpf[X] and replacing X = X / lpf[X]
+
+vector<int> lpf(N + 1, 1);
+for (int i = 2; i <= 1e7 + 1; i++) {
+    if (lpf[i] == 1) {
+        lpf[i] = i;
+        for (int j = i * i; j <= 1e7 + 1; j += i) {
+            lpf[j] = i;
+        }
+    }
+}
+
+// now to factorize
+while (num != 1) {
+    cout << lpf[num] << " ";
+    num /= lpf[num];
+}
+```
+
+Before going back to the problem again, I'd like to introduce **Modular Arithmetic**.
+
+- $a \% b$ = remainder when $a$ is divided by $b$
+- $a \% b$ is **always less than** $b$, i.e., $0 \leq a \% b \leq b-1$
+- $\%$ is called the **modulus operator** and $a \% b$ is called **$a$ modulo $b$**.
+- It is generally used when we want to wrap a number around some fixed constraint (see point number 2).
+- Usually, when dealing with big numbers and calculations, we are told to return $ans \% (1e9 + 7)$, with $1e9 + 7$ being a prime.
+- Below are some common modulus arithmetic properties:
+  - _No. of mods = Total No. of Variables + Total No. of Operations (similar for multiplication)_
+  - $a + b = (a \% m + b \% m) \% m$
+  - $a + b + c = ((a \% m + b \% m) \% m + c \% m) \% m$
+  - for subtracttion, use $(a - b + m) \% m$ to handle negatives.
+- But for division, we do:
+
+  - $(a / b) \bmod m = (a \cdot b^{-1}) \bmod m$
+
+- $b^{-1}$ is the **multiplicative inverse** of $b$ modulo $m$
+
+  - i.e., $(b \cdot x) \bmod m = 1$, where $x$ is the inverse of $b$
+
+- To calculate the multiplicative inverse when $m$ is prime, we use **Fermat's Little Theorem**:
+
+  - If $p$ is a prime and $b \not\equiv 0 \pmod{p}$ (i.e., $b$ is not divisible by $p$), then:
+    $$
+b^{p - 1} \equiv 1 \pmod{p} \quad \text{(i.e., raising $b$ to the power $p-1$ leaves a remainder of 1 when divided by $p$)}
+    $$
+
+  - Multiply both sides by $b^{-1}$:
+
+    $$
+    b^{p - 2} \equiv b^{-1} \mod p
+    $$
+
+  - So,
+    $$
+    b^{-1} \mod p = b^{p - 2} \mod p
+    $$
+
+- Thus, for modular division:
+  $$
+  \frac{a}{b} \mod p = a \cdot b^{p - 2} \mod p
+  $$
+- Hence, in simple words, the multiplicative inverse of a number $b$:
+  - $b^{-1} \mod p = b^{p-2} \mod p$
+- Now, you might be thinking: how do we calculate $b$ raised to the power $p-2$? Since we generally use $1e9+7$ as $p$, let me introduce another topic: **Binary Exponentiation**, which lets us calculate powers in $O(\log p)$ time complexity.
+  - $x^{n} = x * x * x * \cdots * x$ (i.e., $x$ multiplied $n$ times)
+  - If we try to do this using a general for loop, it's going to take $O(N)$ time complexity, which is clearly not feasible. Since $N$ we're dealing with here is $(1e9 + 7)$.
+- We're going to make a simple optimization to significantly reduce the time complexity:
+
+  - $x^{n} = (x \times x)^{n/2} = (x^{2})^{n/2}$ (by the basic exponent rule, $(x^{a})^{b} = x^{a \cdot b}$)
+  - Thus, if we repeatedly divide $n$ by $2$ and square $x$ at each step, we can achieve a logarithmic time complexity.
+
+- More specifically:
+  - If $n$ is **even**, then $x^{n} = (x^{2})^{n/2}$
+  - If $n$ is **odd**, then $x^{n} = x \times x^{n - 1}$, and we reduce the problem by decreasing $n$ by 1.
+
+Below is a C++ implementation of the same:
+
+```cpp
+// bin_pow(x, n) = x^n
+const int mod = 1e9 + 7;
+int bin_pow(int base, int exp) {
+    int ans = 1;
+    base %= mod; // Handle base larger than mod
+
+    while (exp > 0) {
+        if (exp % 2 == 1) {
+            ans = (1LL * ans * base) % mod;
+        }
+        base = (1LL * base * base) % mod;
+        exp /= 2;
+    }
+
+    return ans;
+}
+```
+
+- We're always taking mod at each multiplication. Thus, the answer will always be less than $(1e9+7)$ even for $b^{p-2}$ where $p=1e9+7$ itself.
+
+Great, now we've finished with most of the prerequisites for the problem. So, let's go back to the problem again.
+
+- We need to find the number of divisors of $B_i$, where $B_i = A_i * M!$
+- After learning all these concepts above, we get the idea that if we can obtain the prime factorization of $B_i$, then we can proceed to the solution.
+- What exactly do we do?
+
+  - Let's assume the prime factorization of $B_i$:
+
+    $$
+    B_i = P_1^{x} \times P_2^{y} \times P_3^{z} \cdots
+    $$
+
+    where $P_1, P_2, P_3, \cdots$ are the prime factors of $B_i$ and $x, y, z, \cdots$ are the powers of each of them, respectively.
+
+  - Each prime factor $P^k$ contributes $k + 1$ choices (from $P^0$ to $P^k$) in a divisor.  
+    So, by the **multiplication principle**, the total number of divisors is: _Number of divisors of $B_i = (x+1)\times(y+1)\times(z+1)\cdots$_
+
+Great! We've almost reached the solution. We just need to _prime factorize_ $M! * A_i$.
+
+- Now, here I introduce the last concept for this blog: **Legendre's formula – Largest power of a prime $p$ in $n!$**
+  - To find the highest power of a prime $p$ that divides $n!$, we count how often $p$ appears in the factorization.
+  - Multiples of $p$ contribute one factor: $\left\lfloor \frac{n}{p} \right\rfloor$  
+    Multiples of $p^2$ contribute an extra: $\left\lfloor \frac{n}{p^2} \right\rfloor$  
+    Multiples of $p^3$ contribute yet another: $\left\lfloor \frac{n}{p^3} \right\rfloor$  
+    ... and so on, until $p^k > n$.
+  - Therefore, **Legendre's Formula:** $\displaystyle \sum_{i=1}^{\infty} \left\lfloor \frac{n}{p^i} \right\rfloor$
+
+Great! We now know how to factorize $M!$.
+Let's formulate our solution!
+
+1.  - Read integers `n` (size of array) and `M` (factorial base).
+    - Read array `v` of size `n` — these are the $A_i$ values.
+    - Set up a sieve to generate all **primes up to $M$**.
+2.  Precompute prime powers in $M!$ using **Legendre's Formula** and store them in a map $m[p] = \text{power}$.
+    Power of $p = \displaystyle \sum_{i=1}^{\infty} \left\lfloor \frac{M}{p^i} \right\rfloor$
+3.  - For each $v[i]$, compute its **prime factorization** using trial division.
+    - Store the prime factors and their counts in a local map `fact`.
+    - For each number $v[i]$, **merge** its prime factors with the prime factors of $M!$.
+4.  Now, calculate the final answer for each $v[i]$ by looping through the `fact` map and
+    _Number of divisors_ $= (x_1+1)(x_2+1)\dots$
+    Time Complexity: $O(M \log \log M)$ for Sieve + $O(M)$ for Legendre + $O(n \cdot (\sqrt{A} + \frac{M}{\log M}))$ for root computation, merging, and calculating the final result.
+
+Below is a code snippet with comments implementing the above steps:
+
+```cpp
+#include <bits/stdc++.h>
+typedef long long ll;
+typedef long double ld;
+const ll mod = 1e9 + 7;
+const ll INF = 1e18;
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+
+using namespace std;
+
+// Function to multiply two numbers under modulo
+ll mul(ll x, ll y) {
+    x %= mod;
+    y %= mod;
+    return (x * y) % mod;
+}
+
+// Sieve of Eratosthenes to find all primes up to 'n'
+void sieve(ll n, vector<ll> &primes) {
+    vector<ll> p(n + 1, 1);  // Initialize all numbers as prime
+    for (ll i = 2; i <= n; i++) {
+        if (p[i]) {
+            for (ll j = i * i; j <= n; j += i) {
+                p[j] = 0;  // Mark non-primes
+            }
+        }
+    }
+    for (ll i = 2; i <= n; i++) {
+        if (p[i]) primes.push_back(i);  // Collect all prime numbers
+    }
+}
+
+int main() {
+    map<ll, ll> m;  // To store power of each prime in M!
+    ll n, M;
+    cin >> n >> M;
+
+    vector<ll> v(n), primes;
+    for (ll i = 0; i < n; i++) cin >> v[i];
+
+    // Step 1: Compute all primes up to M
+    sieve(M, primes);
+
+    // Step 2: Use Legendre's formula to calculate the power of each prime in M!
+    for (auto e : primes) {
+        ll num = M, res = 0;
+        while (num > 0) {
+            num /= e;
+            res += num;  // Accumulate number of times 'e' divides M!
+        }
+        m[e] = res;
+    }
+
+    // Step 3: Process each A[i] in the array
+    for (ll i = 0; i < n; i++) {
+        map<ll, ll> fact;
+
+        // Step 4: Prime factorize A[i] using trial division
+        for (ll j = 2; j * j <= v[i]; j++) {
+            ll ct = 0;
+            while (v[i] % j == 0) {
+                v[i] /= j;
+                ct++;
+            }
+            if (ct > 0) fact[j] = ct;
+        }
+
+        // If v[i] itself is a prime > sqrt(original v[i])
+        if (v[i] > 1) fact[v[i]] = 1;
+
+        // Step 5: Merge the factorization of A[i] with M! (add exponents)
+        for (auto e : m) {
+            fact[e.first] += e.second;
+        }
+
+        // Step 6: Compute number of divisors using formula:
+        // (a1+1)*(a2+1)*...(ak+1), where ai is exponent of prime
+        ll ans = 1;
+        for (auto e : fact) {
+            ll x = e.second + 1;
+            ans = (ans * x) % mod;
+        }
+
+        cout << ans << " ";
+    }
+}
+```
+
+Wow, we solved this problem! But an important thing to note here is that in Legendre's Formula calculation, $M$ can be $100$ at max, thus $O(M)$ makes sense. But if we increase $M$ to $1e7$, the above solution will give TLE.
+
+Below are the modified constraints:
+
+- $1 \leq N \leq 1e5$
+- $1 \leq M \leq 1e7$
+- $1 \leq A_i \leq 1e7$
+
+Now, how can we optimize it further for big values of $M$ and $A_i$?
+
+- To handle big values of $A_i$, we can use factorization using Sieve, which is logarithmic time complexity. To do this, we'll modify the Sieve array to an $LPF$ array, where $LPF_i$ is the lowest prime factor of the $i$-th number. And if $LPF_i = i$, then $i$ is a prime.
+- And to handle large values of $M$, we'll define a new array $SPF$ where $SPF_i$ is the power the $i$-th number carries.
+- To factorize $M!$ now, we'll iterate over $2$ to $M$ and for each value, we'll prime factorize it and store it in the $SPF$ array.
+  Below is a code snippet for the same:
+
+```cpp
+for (ll i = 2; i <= m; i++) {
+    ll x = i;
+    while (x > 1) {
+        spf[lpf[x]]++; // Increment power of prime
+        x /= lpf[x];
+    }
+}
+```
+
+- Now that we've prime factorization of $M!$, we'll calculate the result for $M!$ only, i.e., $(p_1+1)*(p_2+1)\dots$
+
+```cpp
+ll ans = 1;
+for (auto e : primes) {
+    ans = mul(ans, spf[e] + 1); // Using formula (a+1)(b+1)... where a,b are exponents
+}
+```
+
+- Now, we'll prime factorize each $A_i$ using Sieve and store it in a _Factor_ map. $Factor[x] = p$, where $p$ is the power of $x$ in $A[i]$
+- For the final result for each $A_i$, we will iterate through the _Factor_ map and $ans = ans * (p_x + spf[x] + 1) / (spf[x] + 1)$
+  - where $p_x$ is the power of $x$ in $A[i]$
+  - $x$ is the factor of $A[i]$
+  - Initially, $ans$ is the number of divisors of $M!$ only. To update it for each $A_i$, we'll remove the contribution of $x$ from $ans$ (i.e., divide $ans$ by $spf[x] + 1$) and add the joint contribution of $x$ from $A_i$ and $M!$ both to $ans$ (i.e., multiply $ans$ with $p_x + spf[x] + 1$)
+  - To remove contributions, we multiply $ans$ with the multiplicative inverse of $(spf[x] + 1)$ because we can't divide directly when modular arithmetic is involved. And to compute the multiplicative inverse, we calculate $(spf[i] + 1)^{mod -2}$ where $mod = 1e9+7$.
+
+Below is the complete code implementing the solution with comments:
+
+```cpp
+#include <bits/stdc++.h>
+typedef long long ll;
+typedef long double ld;
+const ll mod = 1e9 + 7;
+const ll INF = 1e18;
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+
+using namespace std;
+
+// Global constants
+ll N = 1e7 + 1;
+vector<ll> spf(N, 0); // Stores the power of each prime factor in M!
+vector<ll> lpf(N, 1); // Stores the lowest prime factor (LPF) of every number
+
+// Function to perform modular multiplication
+ll mul(ll x, ll y) {
+    x %= mod;
+    y %= mod;
+    return (x * y) % mod;
+}
+
+// Sieve of Eratosthenes to fill LPF for all numbers up to N
+void sieve() {
+    for (ll i = 2; i < N; i++) {
+        if (lpf[i] == 1) {
+            lpf[i] = i; // 'i' is a prime
+            for (ll j = i * i; j < N; j += i) {
+                if (lpf[j] == 1)
+                    lpf[j] = i; // Set the lowest prime factor
+            }
+        }
+    }
+}
+
+// Factorizes a number 'x' using precomputed LPF
+void factorize(ll x, map<ll, ll> &fact) {
+    while (x > 1) {
+        fact[lpf[x]]++;
+        x /= lpf[x];
+    }
+}
+
+// Modular exponentiation to compute a^b % mod
+ll bin_pow(ll x, ll n, ll mod) {
+    x %= mod;
+    ll res = 1;
+    while (n > 0) {
+        if (n % 2)
+            res = res * x % mod;
+        x = x * x % mod;
+        n /= 2;
+    }
+    return res;
+}
+
+int main() {
+    // STEP 1: Input reading
+    ll n, m;
+    cin >> n >> m;
+    vector<ll> v(n);
+    for (ll i = 0; i < n; i++)
+        cin >> v[i];
+
+    // STEP 2: Preprocess LPF (lowest prime factor)
+    sieve();
+
+    // STEP 3: Collect all primes ≤ m
+    vector<ll> primes;
+    for (ll i = 2; i <= m; i++) {
+        if (lpf[i] == i) {
+            primes.push_back(i);
+        }
+    }
+
+    // STEP 4: Compute prime factorization of M! using the LPF
+    for (ll i = 2; i <= m; i++) {
+        ll x = i;
+        while (x > 1) {
+            spf[lpf[x]]++; // Increment power of prime
+            x /= lpf[x];
+        }
+    }
+
+    // STEP 5: Calculate number of divisors of M! using its prime factorization
+    ll ans = 1;
+    for (auto e : primes) {
+        ans = mul(ans, spf[e] + 1); // Using formula (a+1)(b+1)... where a,b are exponents
+    }
+
+    // STEP 6: For each A[i], factorize and adjust number of divisors accordingly
+    for (auto e : v) {
+        map<ll, ll> fact;
+        factorize(e, fact); // Factorize A[i]
+
+        ll res = ans;
+        for (auto &[x, p] : fact) {
+            // Multiply with (f1 + m1 + 1), where:
+            // f1 = exponent of x in A[i], m1 = exponent of x in M!
+            res = mul(res, p + spf[x] + 1);
+
+            // Divide by (m1 + 1) using modular inverse
+            res = mul(res, bin_pow(spf[x] + 1, mod - 2, mod));
+        }
+        cout << res << " ";
+    }
+}
+```
+
+---
+
+That was heavy. So, I'll summarize what we've learned in this blog:
+
+### **Problem Overview**
+
+Given:
+
+- Array $A$ of size $N$
+- Integer $M$
+
+Define $B_i = A_i \times M!$, and compute $F(B_i)$ — the number of divisors of $B_i$.
+
+Return $F(B_i) \bmod (10^9 + 7)$ for all $i$.
+
+---
+
+**Core Concepts Covered**
+
+### 1. **Divisors & Factorization**
+
+- **Divisor**: $d$ divides $x$ if $x \bmod d = 0$
+- **Factorization**: Writing $x$ as a product of smaller numbers
+- **Prime Factorization**: Decompose into prime numbers only, e.g., $36 = 2^2 \times 3^2$
+- **Divisors from Prime Factors**:
+  - If $x = p_1^{a_1} \cdot p_2^{a_2} \cdot \dots$, then number of divisors = $(a_1 + 1)(a_2 + 1)\dots$
+
+### 2. **Efficient Factorization**
+
+- **Naive**: Try all $i$ from $1$ to $x$ — $O(N)$
+- **Optimized**: Iterate up to $\sqrt{x}$ — $O(\sqrt{N})$
+- **Further**: Use **Sieve of Eratosthenes** and **LPF (Lowest Prime Factor)** for $O(\log N)$ factorization
+
+### 3. **Sieve of Eratosthenes**
+
+- Finds all primes $\leq N$ in $O(N \log \log N)$
+- Marks all multiples of each prime as composite
+- Can be modified to store **Smallest Prime Factor (SPF)** or **LPF**
+
+### 4. **Prime Factorization Using LPF Array**
+
+- Precompute LPF via Sieve
+- For number $x$: keep dividing by `lpf[x]` to extract prime factors
+- Time Complexity: $O(\log x)$
+
+### 5. **Legendre's Formula**
+
+- Power of a prime $p$ in $M!$ is:
+
+  $$
+  \sum_{i=1}^{\infty} \left\lfloor \frac{M}{p^i} \right\rfloor
+  $$
+
+- Helps factorize $M!$ without explicitly computing it
+
+### 6. **Modular Arithmetic**
+
+- Common modulus used: $10^9 + 7$ (a prime)
+- Key properties:
+  - $(a + b) \bmod m = (a \bmod m + b \bmod m) \bmod m$
+  - $(a \cdot b) \bmod m = (a \bmod m \cdot b \bmod m) \bmod m$
+- **Modular Inverse**:
+  - When dividing under modulo, use: $a / b \bmod m = a \cdot b^{-1} \bmod m$
+  - Compute inverse via Fermat's Little Theorem (when $m$ is prime):
+    $$
+    b^{-1} \bmod m = b^{m - 2} \bmod m
+    $$
+
+### 7. **Binary Exponentiation**
+
+- Compute $x^n \bmod m$ in $O(\log n)$
+- If $n$ is even: $x^n = (x^2)^{n/2}$
+- If $n$ is odd: $x^n = x \cdot x^{n - 1}$
+
+---
+
+### 8. **Final Algorithm Summary**
+
+#### Case 1: $M \leq 100$
+
+- Precompute prime powers in $M!$ using **Legendre's Formula**
+- Factorize each $A_i$ using trial division
+- Merge both factorizations to get $B_i$
+- Compute number of divisors
+
+#### Case 2: $M, A_i \leq 10^7$
+
+- Use **Sieve with LPF** to factorize all $A_i$
+- Factorize $M!$ by factorizing each number from $1$ to $M$
+- Precompute number of divisors for $M!$ as base answer
+- For each $A_i$, adjust divisor count using:
+
+  $$
+  \text{new\_ans} = \text{base} \cdot \frac{p_x + \text{spf}[x] + 1}{\text{spf}[x] + 1} \bmod (10^9 + 7)
+  $$
+
+- Use **modular inverse** for division
+
+---
+
+### Wrapping Up
+
+We started with what looked like a simple number theory problem, but along the way, we learned many important concepts:
+
+- **Divisors and Prime Factorization**
+- **Efficient Prime Generation using Sieve of Eratosthenes**
+- **Legendre's Formula for factorial prime powers**
+- **Modular Arithmetic and Modular Inverses**
+- **Binary Exponentiation for fast power computations**
+- **Optimized Factorization using SPF/LPF arrays**
+
+And most importantly — how to **combine them all smartly** to solve a tough problem efficiently, even with large constraints.
+
+This single problem gave us the chance to explore nearly every number theory concept you'll need for competitive programming. If you understood everything here, congratulations! You've taken a huge leap forward.
+
+This problem is taken from **_Codechef Starters 166_**. You can submit your own version of the solution at the links below.
+
+Below are the problem links:
+
+1.  Easy Version – https://www.codechef.com/problems/DIVISORS2
+2.  Hard Version – https://www.codechef.com/problems/LOLBSGNJ6PK8

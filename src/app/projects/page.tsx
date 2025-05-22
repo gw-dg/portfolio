@@ -1,4 +1,3 @@
-import AnimatedBackground from "@/components/animated-background";
 import NavBar from "@/components/nav-bar";
 import { Button } from "@/components/ui/button";
 import {
@@ -79,31 +78,33 @@ export default function ProjectsPage() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
-      <AnimatedBackground />
-
       <div className="container relative z-10 mx-auto flex min-h-screen max-w-4xl flex-col px-4 py-8">
         <NavBar />
 
         <main className="flex-1 py-12">
-          <h1 className="mb-8 text-4xl font-bold">Projects</h1>
+          <h1 className="mb-8 text-4xl font-bold text-[hsl(var(--foreground))]">
+            Projects
+          </h1>
 
           <div className="mb-12">
-            <h2 className="mb-6 text-2xl font-medium">Featured Projects</h2>
+            <h2 className="mb-6 text-2xl font-medium text-[hsl(var(--foreground))]">
+              Featured Projects
+            </h2>
             <div className="grid gap-6 md:grid-cols-2">
               {featuredProjects.map((project) => (
-                <Card
-                  key={project.id}
-                  className="dark:border-white/10 border border-border bg-card transition-colors">
+                <Card key={project.id} className="theme-card theme-card-hover">
                   <CardHeader>
-                    <CardTitle>{project.title}</CardTitle>
-                    <CardDescription>{project.description}</CardDescription>
+                    <CardTitle className="text-[hsl(var(--card-foreground))]">
+                      {project.title}
+                    </CardTitle>
+                    <CardDescription className="text-[hsl(var(--muted-foreground))]">
+                      {project.description}
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
                       {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-md bg-white/10 px-2 py-1 text-xs">
+                        <span key={tag} className="theme-badge">
                           {tag}
                         </span>
                       ))}
@@ -117,7 +118,7 @@ export default function ProjectsPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-white/20 hover:bg-white/10 hover:text-white">
+                        className="border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]">
                         <Github className="mr-2 h-4 w-4" />
                         GitHub
                       </Button>
@@ -130,7 +131,7 @@ export default function ProjectsPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="border-white/20 hover:bg-white/10 hover:text-white">
+                          className="border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]">
                           <ExternalLink className="mr-2 h-4 w-4" />
                           Live
                         </Button>
@@ -143,22 +144,24 @@ export default function ProjectsPage() {
           </div>
 
           <div>
-            <h2 className="mb-6 text-2xl font-medium">Other Projects</h2>
+            <h2 className="mb-6 text-2xl font-medium text-[hsl(var(--foreground))]">
+              Other Projects
+            </h2>
             <div className="grid gap-6 md:grid-cols-2">
               {otherProjects.map((project) => (
-                <Card
-                  key={project.id}
-                  className="dark:border-white/10 border border-border bg-card transition-colors">
+                <Card key={project.id} className="theme-card theme-card-hover">
                   <CardHeader>
-                    <CardTitle>{project.title}</CardTitle>
-                    <CardDescription>{project.description}</CardDescription>
+                    <CardTitle className="text-[hsl(var(--card-foreground))]">
+                      {project.title}
+                    </CardTitle>
+                    <CardDescription className="text-[hsl(var(--muted-foreground))]">
+                      {project.description}
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
                       {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-md bg-white/10 px-2 py-1 text-xs">
+                        <span key={tag} className="theme-badge">
                           {tag}
                         </span>
                       ))}
@@ -172,7 +175,7 @@ export default function ProjectsPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-white/20 hover:bg-white/10 hover:text-white">
+                        className="border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]">
                         <Github className="mr-2 h-4 w-4" />
                         GitHub
                       </Button>
@@ -185,7 +188,7 @@ export default function ProjectsPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="border-white/20 hover:bg-white/10 hover:text-white">
+                          className="border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]">
                           <ExternalLink className="mr-2 h-4 w-4" />
                           Live
                         </Button>
@@ -198,7 +201,7 @@ export default function ProjectsPage() {
           </div>
         </main>
 
-        <footer className="py-8 text-center text-sm text-gray-400">
+        <footer className="py-8 text-center text-sm text-[hsl(var(--muted-foreground))]">
           <p>© {new Date().getFullYear()} • bhaskar</p>
         </footer>
       </div>

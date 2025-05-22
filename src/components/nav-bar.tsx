@@ -20,7 +20,9 @@ export default function NavBar() {
 
   return (
     <header className="flex items-center justify-between py-4">
-      <Link href="/" className="text-2xl font-bold dark:text-white text-black">
+      <Link
+        href="/"
+        className="text-2xl font-bold text-[hsl(var(--foreground))]">
         <span className="font-serif italic">GwdG</span>
       </Link>
 
@@ -33,8 +35,9 @@ export default function NavBar() {
               target={item.external ? "_blank" : undefined}
               rel={item.external ? "noopener noreferrer" : undefined}
               className={cn(
-                "dark:hover:text-gray-300 hover:text-gray-600 transition-colors dark:text-white text-black",
-                pathname === item.href && "font-medium"
+                "hover:text-[hsl(var(--muted-foreground))] transition-colors text-[hsl(var(--foreground))]",
+                pathname === item.href &&
+                  "font-medium text-[hsl(var(--primary))]"
               )}>
               {item.name}
             </Link>
