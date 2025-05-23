@@ -7,6 +7,7 @@ import NavBar from "@/components/nav-bar";
 import type { Metadata } from "next";
 
 // Metadata for the home page
+// Fixed metadata for the home page
 export const metadata: Metadata = {
   title: "Bhaskar Jha - Developer & Designer",
   description:
@@ -36,11 +37,16 @@ export const metadata: Metadata = {
     siteName: "Bhaskar Jha",
     title: "Bhaskar Jha - Developer & Designer",
     description:
-      "Passionate developer and designer focused on creating beautiful, functional experiences. Creator of To All The Films and PasteBox.",
+      "Passionate developer and designer focused on creating beautiful, functional experiences.",
     images: [
       {
         url: new URL(
-          "/api/og?title=Bhaskar Jha&description=Developer & Designer passionate about creating beautiful, functional experiences&tags=Developer,Designer,React,JavaScript,Machine Learning",
+          `/api/og?${new URLSearchParams({
+            title: "Bhaskar Jha",
+            description:
+              "Developer & Designer passionate about creating beautiful experiences",
+            tags: "Developer,Designer,React,JavaScript,Machine Learning",
+          }).toString()}`,
           process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
         ).toString(),
         width: 1200,
@@ -53,12 +59,17 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Bhaskar Jha - Developer & Designer",
     description:
-      "Passionate developer and designer focused on creating beautiful, functional experiences. Creator of To All The Films and PasteBox.",
+      "Passionate developer and designer focused on creating beautiful, functional experiences.",
     creator: "@bhaskar__jha",
     site: "@bhaskar__jha",
     images: [
       new URL(
-        "/api/og?title=Bhaskar Jha&description=Developer & Designer passionate about creating beautiful, functional experiences&tags=Developer,Designer,React,JavaScript,Machine Learning",
+        `/api/og?${new URLSearchParams({
+          title: "Bhaskar Jha",
+          description:
+            "Developer & Designer passionate about creating beautiful experiences",
+          tags: "Developer,Designer,React,JavaScript,Machine Learning",
+        }).toString()}`,
         process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
       ).toString(),
     ],

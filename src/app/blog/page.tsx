@@ -16,12 +16,10 @@ import type { Metadata } from "next";
 // Metadata for the blog page
 export const metadata: Metadata = {
   title: "Blog | Bhaskar Jha",
-  description:
-    "Thoughts on development, algorithms, design, and technology by Bhaskar Jha",
+  description: "Thoughts on development, algorithms, design, and technology",
   openGraph: {
     title: "Blog | Bhaskar Jha",
-    description:
-      "Thoughts on development, algorithms, design, and technology by Bhaskar Jha",
+    description: "Thoughts on development, algorithms, design, and technology",
     type: "website",
     images: [
       {
@@ -38,8 +36,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Blog | Bhaskar Jha",
-    description:
-      "Thoughts on development, algorithms, design, and technology by Bhaskar Jha",
+    description: "Thoughts on development, algorithms, design, and technology",
     creator: "@bhaskar__jha",
   },
 };

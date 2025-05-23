@@ -16,7 +16,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Projects | Bhaskar Jha",
   description:
-    "Explore my featured projects including movie discovery apps, note-taking tools, ML-based disease prediction, typing speed tests, and IoT solutions using React, Node.js, Python, and more.",
+    "Explore my featured projects including To All The films, Pastebox, Zen-type, and more.",
   keywords: [
     "projects",
     "portfolio",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Projects | Bhaskar Jha",
     description:
-      "Explore my featured projects including movie discovery apps, note-taking tools, ML-based disease prediction, typing speed tests, and IoT solutions.",
+      "Explore my featured projects including To All The films, Pastebox, Zen-type, and more.",
     type: "website",
     url: "/projects",
     siteName: "Bhaskar Jha",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Projects | Bhaskar Jha",
     description:
-      "Explore my featured projects including movie discovery apps, note-taking tools, ML-based disease prediction, and more.",
+      "Explore my featured projects including To All The films, Pastebox, Zen-type, and more.",
     creator: "@bhaskar__jha",
     images: [
       new URL(

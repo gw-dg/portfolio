@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s | Bhaskar Jha",
   },
   description:
-    "Simple Portfolio Website showcasing development projects, blog posts, and technical expertise",
+    "Portfolio Website showcasing development projects, blog posts, and technical expertise",
   applicationName: "Bhaskar Jha Portfolio",
   authors: [{ name: "Bhaskar Jha", url: "https://github.com/gw-dg" }],
   creator: "Bhaskar Jha",
@@ -49,9 +49,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Bhaskar Jha",
-    title: "Bhaskar Jha - Developer & Designer",
+    title: "Bhaskar Jha - Developer",
     description:
-      "Simple Portfolio Website showcasing development projects, blog posts, and technical expertise",
+      "Portfolio Website showcasing development projects, blog posts, and technical expertise",
   },
   twitter: {
     card: "summary_large_image",
