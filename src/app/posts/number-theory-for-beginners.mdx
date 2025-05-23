@@ -1,5 +1,5 @@
 ---
-title: "Learn (almost) every Number Theory concept you'll need to know for Competitive Programming from a single problem!"
+title: "A Beginner's Guide to Number Theory Concepts in Competitive Programming through a Single Problem!"
 description: "Learn essential number theory concepts like Modular Arithmetic, Sieve of Eratosthenes, Prime Factorization using Sieve, Legendre's formula, and much more—all through a single problem."
 date: "2025-05-23"
 readTime: "30 min read"
@@ -108,13 +108,13 @@ void all_divisors(int num) {
 map<long long, int> primeFactorize(long long n) {
     map<long long, int> factors;
 
-    // Divide by 2 until it's odd
+    // divide by 2 until it's odd
     while (n % 2 == 0) {
         factors[2]++;
         n /= 2;
     }
 
-    // Try odd divisors from 3 up to sqrt(n)
+    // odd divisors from 3 up to sqrt(n)
     for (long long i = 3; i * i <= n; i += 2) {
         while (n % i == 0) {
             factors[i]++;
@@ -122,7 +122,7 @@ map<long long, int> primeFactorize(long long n) {
         }
     }
 
-    // If n is still greater than 1, it's a prime
+    // if n is still greater than 1, it's a prime
     if (n > 1) {
         factors[n]++;
     }
@@ -341,14 +341,14 @@ const ll INF = 1e18;
 
 using namespace std;
 
-// Function to multiply two numbers under modulo
+// modulus multiplication
 ll mul(ll x, ll y) {
     x %= mod;
     y %= mod;
     return (x * y) % mod;
 }
 
-// Sieve of Eratosthenes to find all primes up to 'n'
+// Sieve of Eratosthenes
 void sieve(ll n, vector<ll> &primes) {
     vector<ll> p(n + 1, 1);  // Initialize all numbers as prime
     for (ll i = 2; i <= n; i++) {
@@ -371,24 +371,23 @@ int main() {
     vector<ll> v(n), primes;
     for (ll i = 0; i < n; i++) cin >> v[i];
 
-    // Step 1: Compute all primes up to M
+    // primes array is filled with all primes upto M
     sieve(M, primes);
 
-    // Step 2: Use Legendre's formula to calculate the power of each prime in M!
+    // Legendre's formula to calculate the power of each prime in M!
     for (auto e : primes) {
         ll num = M, res = 0;
         while (num > 0) {
-            num /= e;
-            res += num;  // Accumulate number of times 'e' divides M!
+            num /= e; // Accumulate number of times 'e' divides M!
+            res += num;
         }
         m[e] = res;
     }
 
-    // Step 3: Process each A[i] in the array
     for (ll i = 0; i < n; i++) {
         map<ll, ll> fact;
 
-        // Step 4: Prime factorize A[i] using trial division
+        // prime factorization of A[i]
         for (ll j = 2; j * j <= v[i]; j++) {
             ll ct = 0;
             while (v[i] % j == 0) {
@@ -398,15 +397,14 @@ int main() {
             if (ct > 0) fact[j] = ct;
         }
 
-        // If v[i] itself is a prime > sqrt(original v[i])
         if (v[i] > 1) fact[v[i]] = 1;
 
-        // Step 5: Merge the factorization of A[i] with M! (add exponents)
+        // merge the factorization of A[i] with M!
         for (auto e : m) {
             fact[e.first] += e.second;
         }
 
-        // Step 6: Compute number of divisors using formula:
+        // number of divisors using formula:
         // (a1+1)*(a2+1)*...(ak+1), where ai is exponent of prime
         ll ans = 1;
         for (auto e : fact) {
@@ -475,17 +473,17 @@ using namespace std;
 
 // Global constants
 ll N = 1e7 + 1;
-vector<ll> spf(N, 0); // Stores the power of each prime factor in M!
+vector<ll> spf(N, 0); // Stores the power of each i in M!
 vector<ll> lpf(N, 1); // Stores the lowest prime factor (LPF) of every number
 
-// Function to perform modular multiplication
+// Modular Multiplication
 ll mul(ll x, ll y) {
     x %= mod;
     y %= mod;
     return (x * y) % mod;
 }
 
-// Sieve of Eratosthenes to fill LPF for all numbers up to N
+// Sieve of Eratosthenes
 void sieve() {
     for (ll i = 2; i < N; i++) {
         if (lpf[i] == 1) {
@@ -498,7 +496,7 @@ void sieve() {
     }
 }
 
-// Factorizes a number 'x' using precomputed LPF
+// fact[y] = p, where y is factor and p is exponent of x
 void factorize(ll x, map<ll, ll> &fact) {
     while (x > 1) {
         fact[lpf[x]]++;
@@ -506,7 +504,7 @@ void factorize(ll x, map<ll, ll> &fact) {
     }
 }
 
-// Modular exponentiation to compute a^b % mod
+// bin_pow(x,n,mod) = (x^n) % mod
 ll bin_pow(ll x, ll n, ll mod) {
     x %= mod;
     ll res = 1;
@@ -520,17 +518,17 @@ ll bin_pow(ll x, ll n, ll mod) {
 }
 
 int main() {
-    // STEP 1: Input reading
+
     ll n, m;
     cin >> n >> m;
     vector<ll> v(n);
     for (ll i = 0; i < n; i++)
         cin >> v[i];
 
-    // STEP 2: Preprocess LPF (lowest prime factor)
+    //Preprocess LPF (lowest prime factor)
     sieve();
 
-    // STEP 3: Collect all primes ≤ m
+    // find all primes <=m
     vector<ll> primes;
     for (ll i = 2; i <= m; i++) {
         if (lpf[i] == i) {
@@ -538,7 +536,7 @@ int main() {
         }
     }
 
-    // STEP 4: Compute prime factorization of M! using the LPF
+    // prime factorization of M! using the LPF,i.e., prime factorization of every single element from 2 to M
     for (ll i = 2; i <= m; i++) {
         ll x = i;
         while (x > 1) {
@@ -547,24 +545,24 @@ int main() {
         }
     }
 
-    // STEP 5: Calculate number of divisors of M! using its prime factorization
+    // ans calculation, ans = (a+1)(b+1)... where a,b are exponents
     ll ans = 1;
     for (auto e : primes) {
         ans = mul(ans, spf[e] + 1); // Using formula (a+1)(b+1)... where a,b are exponents
     }
 
-    // STEP 6: For each A[i], factorize and adjust number of divisors accordingly
+    // factorize each A[i]
     for (auto e : v) {
         map<ll, ll> fact;
         factorize(e, fact); // Factorize A[i]
 
         ll res = ans;
         for (auto &[x, p] : fact) {
-            // Multiply with (f1 + m1 + 1), where:
-            // f1 = exponent of x in A[i], m1 = exponent of x in M!
+            // Multiply with (p + spf[x] + 1), where:
+            // p = exponent of x in A[i], spf[x] = exponent of x in M!
             res = mul(res, p + spf[x] + 1);
 
-            // Divide by (m1 + 1) using modular inverse
+            // Divide by (spf[x] + 1) using modular inverse
             res = mul(res, bin_pow(spf[x] + 1, mod - 2, mod));
         }
         cout << res << " ";
