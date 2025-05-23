@@ -1,81 +1,128 @@
-import { getAllPostSlugs, getPostBySlug } from "@/lib/posts";
-import NavBar from "@/components/nav-bar";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import rehypeKatex from "rehype-katex";
+import rehypeMathjax from "rehype-mathjax";
+import rehypeHighlight from "rehype-highlight";
+import remarkMath from "remark-math";
+import "katex/dist/katex.min.css";
+import "highlight.js/styles/github-dark.css";
+import NavBar from "@/components/nav-bar";
+import Link from "next/link";
+import { ArrowLeft, ArrowUp } from "lucide-react";
 
-export async function generateStaticParams() {
-  return getAllPostSlugs().map((slug) => ({
-    slug: slug.replace(/\.mdx$/, ""),
-  }));
-}
+type Props = {
+  params: {
+    slug: string;
+  };
+};
 
-export default async function BlogPostPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const post = getPostBySlug(params.slug);
+const options = {
+  mdxOptions: {
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [rehypeKatex, rehypeHighlight, rehypeMathjax],
+  },
+};
 
-  if (!post) return notFound();
+export default async function BlogPostPage({ params }: Props) {
+  const filePath = path.join(
+    process.cwd(),
+    "src/app/posts",
+    `${params.slug}.mdx`
+  );
+
+  if (!fs.existsSync(filePath)) {
+    return (
+      <div className="min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--foreground))] flex items-center justify-center">
+        <div className="p-8 text-center">
+          <h1 className="text-2xl font-bold text-[hsl(var(--destructive))] mb-4">
+            Post not found
+          </h1>
+          <p className="text-[hsl(var(--muted-foreground))]">
+            The requested blog post could not be found.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const raw = fs.readFileSync(filePath, "utf-8");
+  const { content, data } = matter(raw);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden text-[hsl(var(--foreground))]">
-      <div className="container relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col px-4 py-8">
+    <div className="min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
+      <div className="container mx-auto max-w-4xl px-4 py-12">
         <NavBar />
 
-        <main className="flex-1 py-12">
+        <main className="flex-1 pt-12 -pb-2">
           <Link
             href="/blog"
             className="mb-8 flex items-center text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] transition-colors">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to all posts
           </Link>
-
-          <article>
-            <header className="mb-8">
-              <h1 className="mb-4 text-4xl font-bold text-[hsl(var(--foreground))]">
-                {post.frontmatter.title}
-              </h1>
-              <p className="mb-4 text-xl text-[hsl(var(--muted-foreground))]">
-                {post.frontmatter.description}
-              </p>
-
-              <div className="flex items-center gap-3 text-sm text-[hsl(var(--muted-foreground))]">
-                <span>{post.frontmatter.date}</span>
-                <span>•</span>
-                <span>{post.frontmatter.readTime}</span>
-              </div>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                {post.frontmatter.tags?.map((tag) => (
-                  <span key={tag} className="theme-badge">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </header>
-
-            <div
-              className="prose max-w-none 
-              prose-headings:text-[hsl(var(--prose-heading))] prose-headings:font-medium
-              prose-p:text-[hsl(var(--prose-body))] prose-p:leading-7
-              prose-a:text-[hsl(var(--prose-links))] prose-a:no-underline hover:prose-a:underline
-              prose-strong:text-[hsl(var(--prose-bold))] prose-strong:font-semibold
-              prose-code:text-[hsl(var(--prose-code))] prose-code:bg-[hsl(var(--muted))] prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
-              prose-blockquote:border-l-[hsl(var(--prose-quote-border))] prose-blockquote:text-[hsl(var(--prose-quote))] prose-blockquote:italic
-              prose-ul:text-[hsl(var(--prose-body))] prose-ol:text-[hsl(var(--prose-body))]
-              prose-li:text-[hsl(var(--prose-body))] prose-li:leading-7">
-              <MDXRemote source={post.content} />
-            </div>
-          </article>
         </main>
 
-        <footer className="py-8 text-center text-sm text-[hsl(var(--muted-foreground))]">
-          <p>© {new Date().getFullYear()} • bhaskar</p>
+        {/* Header */}
+        <header className="mb-12 border-b border-[hsl(var(--border))] pb-8">
+          <h1 className="text-4xl font-bold text-[hsl(var(--foreground))] mb-4 leading-tight">
+            {data.title || params.slug}
+          </h1>
+          {data.date && (
+            <p className="text-sm text-[hsl(var(--muted-foreground))] mb-2">
+              {data.date}
+            </p>
+          )}
+          {data.description && (
+            <p className="text-lg text-[hsl(var(--muted-foreground))] leading-relaxed">
+              {data.description}
+            </p>
+          )}
+          {data.tags && data.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              {data.tags.map((tag: string) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1 text-sm font-medium bg-[hsl(var(--secondary))] text-[hsl(var(--secondary-foreground))] rounded-full">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </header>
+
+        {/* Content */}
+        <article className="prose-blog max-w-none">
+          <MDXRemote source={content} options={options} />
+        </article>
+
+        {/* Navigation or back button */}
+        <footer className="mt-16 pt-8 border-t border-[hsl(var(--border))]">
+          <div className="flex justify-between items-center">
+            <a
+              href="#"
+              className="inline-flex items-center text-[hsl(var(--primary))] hover:text-[hsl(var(--primary))] transition-colors">
+              <ArrowUp className="w-4 h-4 mr-2" />
+              Back to top
+            </a>
+            <p className="text-sm text-[hsl(var(--muted-foreground))]">
+              © {new Date().getFullYear()} • bhaskar
+            </p>
+          </div>
         </footer>
       </div>
     </div>
   );
+}
+
+export function generateStaticParams() {
+  const postsDir = path.join(process.cwd(), "src/app/posts");
+  const files = fs.readdirSync(postsDir);
+
+  return files
+    .filter((file) => file.endsWith(".mdx"))
+    .map((file) => ({
+      slug: file.replace(/\.mdx$/, ""),
+    }));
 }
