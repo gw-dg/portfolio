@@ -1,5 +1,5 @@
 // blog/page.tsx
-import { getAllPosts, PostData } from "@/lib/posts";
+import { getAllPosts } from "@/lib/posts";
 import NavBar from "@/components/nav-bar";
 import {
   Card,
