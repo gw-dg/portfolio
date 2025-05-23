@@ -58,9 +58,8 @@ export default function Home() {
           </div>
 
           <p className="mb-8 text-lg text-[hsl(var(--foreground))]">
-            Dreaming up cool ideas and making them come true is where my passion
-            lies. I am enthusiastic about building tools that help myself and
-            others to be more productive and enjoy the process of crafting.
+            Interested in data structures, algorithms, web development, deep
+            learning, embedded systems, competitive programming, and more.
           </p>
 
           <div className="mb-8">
@@ -71,7 +70,7 @@ export default function Home() {
                 className="underline underline-offset-4 text-[hsl(var(--primary))]">
                 blog posts
               </Link>{" "}
-              about development, design, and technology.
+              about development, algorithms, design, and technology.
             </p>
           </div>
 
@@ -108,18 +107,6 @@ export default function Home() {
               <Mail size={20} />
               <span>bhaskar2004jha@gmail.com</span>
             </Link>
-          </div>
-
-          <div className="mt-8">
-            <p className="mb-4 text-lg text-[hsl(var(--foreground))]">
-              If you enjoy my work and find it useful, consider sponsoring me to
-              help keep Open Source sustainable. Thank you!
-            </p>
-            <Button
-              variant="outline"
-              className="border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]">
-              Sponsor
-            </Button>
           </div>
         </main>
 
