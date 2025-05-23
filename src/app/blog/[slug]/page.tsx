@@ -11,6 +11,7 @@ import "highlight.js/styles/github-dark.css";
 import NavBar from "@/components/nav-bar";
 import Link from "next/link";
 import { ArrowLeft, ArrowUp } from "lucide-react";
+import type { Metadata } from "next";
 
 const options = {
   mdxOptions: {
@@ -18,6 +19,70 @@ const options = {
     rehypePlugins: [rehypeKatex, rehypeHighlight, rehypeMathjax],
   },
 };
+
+// Generate metadata for each blog post
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const filePath = path.join(process.cwd(), "src/app/posts", `${slug}.mdx`);
+
+  if (!fs.existsSync(filePath)) {
+    return {
+      title: "Post not found",
+      description: "The requested blog post could not be found.",
+    };
+  }
+
+  const raw = fs.readFileSync(filePath, "utf-8");
+  const { data } = matter(raw);
+
+  const title = data.title || slug;
+  const description = data.description || "A blog post by Bhaskar Jha";
+  const date = data.date || "";
+  const tags = data.tags || [];
+
+  // Generate OG image URL
+  const ogImageUrl = new URL(
+    "/api/og",
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+  );
+  ogImageUrl.searchParams.set("title", title);
+  ogImageUrl.searchParams.set("description", description);
+  if (date) ogImageUrl.searchParams.set("date", date);
+  if (tags.length > 0) ogImageUrl.searchParams.set("tags", tags.join(","));
+
+  return {
+    title: `${title} | Bhaskar Jha`,
+    description,
+    authors: [{ name: "Bhaskar Jha" }],
+    openGraph: {
+      title: `${title} | Bhaskar Jha`,
+      description,
+      type: "article",
+      publishedTime: date,
+      authors: ["Bhaskar Jha"],
+      tags: tags,
+      images: [
+        {
+          url: ogImageUrl.toString(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | Bhaskar Jha`,
+      description,
+      images: [ogImageUrl.toString()],
+      creator: "@bhaskar__jha",
+    },
+  };
+}
 
 export default async function BlogPostPage({
   params,

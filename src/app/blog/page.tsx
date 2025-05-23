@@ -11,6 +11,38 @@ import {
 } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+// Metadata for the blog page
+export const metadata: Metadata = {
+  title: "Blog | Bhaskar Jha",
+  description:
+    "Thoughts on development, algorithms, design, and technology by Bhaskar Jha",
+  openGraph: {
+    title: "Blog | Bhaskar Jha",
+    description:
+      "Thoughts on development, algorithms, design, and technology by Bhaskar Jha",
+    type: "website",
+    images: [
+      {
+        url: new URL(
+          "/api/og?title=Blog&description=Thoughts on development, algorithms, design, and technology",
+          process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+        ).toString(),
+        width: 1200,
+        height: 630,
+        alt: "Bhaskar Jha's Blog",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog | Bhaskar Jha",
+    description:
+      "Thoughts on development, algorithms, design, and technology by Bhaskar Jha",
+    creator: "@bhaskar__jha",
+  },
+};
 
 export default async function BlogPage() {
   const posts = getAllPosts();

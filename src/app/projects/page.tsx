@@ -10,6 +10,62 @@ import {
 } from "@/components/ui/card";
 import { ExternalLink, Github } from "lucide-react";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+// Metadata for the projects page
+export const metadata: Metadata = {
+  title: "Projects | Bhaskar Jha",
+  description:
+    "Explore my featured projects including movie discovery apps, note-taking tools, ML-based disease prediction, typing speed tests, and IoT solutions using React, Node.js, Python, and more.",
+  keywords: [
+    "projects",
+    "portfolio",
+    "web development",
+    "React",
+    "JavaScript",
+    "Machine Learning",
+    "IoT",
+    "Firebase",
+    "Node.js",
+    "Python",
+  ],
+  authors: [{ name: "Bhaskar Jha" }],
+  openGraph: {
+    title: "Projects | Bhaskar Jha",
+    description:
+      "Explore my featured projects including movie discovery apps, note-taking tools, ML-based disease prediction, typing speed tests, and IoT solutions.",
+    type: "website",
+    url: "/projects",
+    siteName: "Bhaskar Jha",
+    images: [
+      {
+        url: new URL(
+          "/api/og?title=Projects&description=Web Development, Machine Learning, and IoT Solutions&tags=React,JavaScript,Python,Machine Learning,IoT",
+          process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+        ).toString(),
+        width: 1200,
+        height: 630,
+        alt: "Bhaskar Jha's Projects",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Projects | Bhaskar Jha",
+    description:
+      "Explore my featured projects including movie discovery apps, note-taking tools, ML-based disease prediction, and more.",
+    creator: "@bhaskar__jha",
+    images: [
+      new URL(
+        "/api/og?title=Projects&description=Web Development, Machine Learning, and IoT Solutions&tags=React,JavaScript,Python,Machine Learning,IoT",
+        process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+      ).toString(),
+    ],
+  },
+  alternates: {
+    canonical: "/projects",
+  },
+};
 
 // Project data
 const projects = [

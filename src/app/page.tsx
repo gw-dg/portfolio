@@ -4,6 +4,83 @@ import { Github, LinkedinIcon, Mail, Twitter, Zap } from "lucide-react";
 import SocialLink from "@/components/social-link";
 import ProjectCard from "@/components/project-card";
 import NavBar from "@/components/nav-bar";
+import type { Metadata } from "next";
+
+// Metadata for the home page
+export const metadata: Metadata = {
+  title: "Bhaskar Jha - Developer & Designer",
+  description:
+    "Passionate developer and designer focused on creating beautiful, functional experiences. Interested in data structures, algorithms, web development, deep learning, embedded systems, and competitive programming.",
+  keywords: [
+    "Bhaskar Jha",
+    "developer",
+    "designer",
+    "web development",
+    "React",
+    "JavaScript",
+    "algorithms",
+    "data structures",
+    "machine learning",
+    "deep learning",
+    "embedded systems",
+    "competitive programming",
+    "Palanam Technologies",
+  ],
+  authors: [{ name: "Bhaskar Jha" }],
+  creator: "Bhaskar Jha",
+  publisher: "Bhaskar Jha",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    siteName: "Bhaskar Jha",
+    title: "Bhaskar Jha - Developer & Designer",
+    description:
+      "Passionate developer and designer focused on creating beautiful, functional experiences. Creator of To All The Films and PasteBox.",
+    images: [
+      {
+        url: new URL(
+          "/api/og?title=Bhaskar Jha&description=Developer & Designer passionate about creating beautiful, functional experiences&tags=Developer,Designer,React,JavaScript,Machine Learning",
+          process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+        ).toString(),
+        width: 1200,
+        height: 630,
+        alt: "Bhaskar Jha - Developer & Designer",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bhaskar Jha - Developer & Designer",
+    description:
+      "Passionate developer and designer focused on creating beautiful, functional experiences. Creator of To All The Films and PasteBox.",
+    creator: "@bhaskar__jha",
+    site: "@bhaskar__jha",
+    images: [
+      new URL(
+        "/api/og?title=Bhaskar Jha&description=Developer & Designer passionate about creating beautiful, functional experiences&tags=Developer,Designer,React,JavaScript,Machine Learning",
+        process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+      ).toString(),
+    ],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "/",
+  },
+  verification: {
+    google: "xJ3pZHVVmsSmWD_XNvywqNJTh_PF6yoSRxBrI2NaWYY",
+  },
+};
 
 export default function Home() {
   return (

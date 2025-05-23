@@ -13,6 +13,7 @@
     "@radix-ui/react-hover-card": "^1.1.13",
     "@radix-ui/react-slot": "^1.2.2",
     "@vercel/analytics": "^1.5.0",
+    "@vercel/og": "^0.6.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "fs": "^0.0.1-security",
