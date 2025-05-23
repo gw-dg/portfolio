@@ -54,7 +54,7 @@ export default async function BlogPage() {
                         </CardTitle>
                         <ArrowRight className="h-5 w-5 text-[hsl(var(--muted-foreground))] group-hover:translate-x-1 group-hover:text-[hsl(var(--primary))] transition-all" />
                       </div>
-                      <CardDescription className="text-[hsl(var(--muted-foreground))]">
+                      <CardDescription className="py-2 text-[hsl(var(--muted-foreground))]">
                         {post.frontmatter.description}
                       </CardDescription>
                     </CardHeader>
@@ -62,9 +62,11 @@ export default async function BlogPage() {
                     {post.frontmatter.tags &&
                       post.frontmatter.tags.length > 0 && (
                         <CardContent>
-                          <div className="flex flex-wrap gap-2">
+                          <div className="py-2 flex flex-wrap gap-2">
                             {post.frontmatter.tags.map((tag) => (
-                              <span key={tag} className="theme-badge">
+                              <span
+                                key={tag}
+                                className="mr-2 ml-2 mt-1 mb-1 theme-badge">
                                 {tag}
                               </span>
                             ))}
@@ -73,7 +75,7 @@ export default async function BlogPage() {
                       )}
 
                     <CardFooter className="text-sm text-[hsl(var(--muted-foreground))]">
-                      <div className="flex items-center gap-3">
+                      <div className="py-2 flex items-center gap-3">
                         <span>{post.frontmatter.date}</span>
                         {post.frontmatter.readTime && (
                           <>

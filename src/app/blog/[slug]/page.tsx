@@ -25,12 +25,13 @@ const options = {
   },
 };
 
-export default async function BlogPostPage({ params }: Props) {
-  const filePath = path.join(
-    process.cwd(),
-    "src/app/posts",
-    `${params.slug}.mdx`
-  );
+export default async function BlogPostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const filePath = path.join(process.cwd(), "src/app/posts", `${slug}.mdx`);
 
   if (!fs.existsSync(filePath)) {
     return (
@@ -67,7 +68,7 @@ export default async function BlogPostPage({ params }: Props) {
         {/* Header */}
         <header className="mb-12 border-b border-[hsl(var(--border))] pb-8">
           <h1 className="text-4xl font-bold text-[hsl(var(--foreground))] mb-4 leading-tight">
-            {data.title || params.slug}
+            {data.title || slug}
           </h1>
           {data.date && (
             <p className="text-sm text-[hsl(var(--muted-foreground))] mb-2">
