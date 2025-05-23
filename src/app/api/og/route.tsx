@@ -39,14 +39,64 @@ const hslToRgb = (h: number, s: number, l: number) => {
 };
 
 // HSL color tokens from globals.css (dark theme)
+// Using the exact values from your .dark theme
 const darkTheme = {
   background: hslToRgb(222, 84, 4.9), // --background: 222 84% 4.9%
   foreground: hslToRgb(210, 40, 98), // --foreground: 210 40% 98%
+  card: hslToRgb(222, 84, 4.9), // --card: 222 84% 4.9%
+  cardForeground: hslToRgb(210, 40, 98), // --card-foreground: 210 40% 98%
+  popover: hslToRgb(222, 84, 4.9), // --popover: 222 84% 4.9%
+  popoverForeground: hslToRgb(210, 40, 98), // --popover-foreground: 210 40% 98%
+  primary: hslToRgb(210, 40, 98), // --primary: 210 40% 98%
+  primaryForeground: hslToRgb(222, 47.4, 11.2), // --primary-foreground: 222 47.4% 11.2%
+  secondary: hslToRgb(217, 32.6, 17.5), // --secondary: 217 32.6% 17.5%
+  secondaryForeground: hslToRgb(210, 40, 98), // --secondary-foreground: 210 40% 98%
   muted: hslToRgb(217, 32.6, 17.5), // --muted: 217 32.6% 17.5%
   mutedForeground: hslToRgb(215, 20.2, 65.1), // --muted-foreground: 215 20.2% 65.1%
   accent: hslToRgb(217, 32.6, 17.5), // --accent: 217 32.6% 17.5%
-  primary: hslToRgb(210, 40, 98), // --primary: 210 40% 98%
+  accentForeground: hslToRgb(210, 40, 98), // --accent-foreground: 210 40% 98%
+  destructive: hslToRgb(0, 62.8, 30.6), // --destructive: 0 62.8% 30.6%
+  destructiveForeground: hslToRgb(210, 40, 98), // --destructive-foreground: 210 40% 98%
   border: hslToRgb(217, 32.6, 17.5), // --border: 217 32.6% 17.5%
+  input: hslToRgb(217, 32.6, 17.5), // --input: 217 32.6% 17.5%
+  ring: hslToRgb(212.7, 26.8, 83.9), // --ring: 212.7 26.8% 83.9%
+  proseBody: hslToRgb(210, 40, 98), // --prose-body: 210 40% 98%
+  proseHeading: hslToRgb(210, 40, 98), // --prose-heading: 210 40% 98%
+  proseLinks: hslToRgb(210, 100, 70), // --prose-links: 210 100% 70%
+  proseBold: hslToRgb(210, 40, 98), // --prose-bold: 210 40% 98%
+  proseCode: hslToRgb(210, 100, 70), // --prose-code: 210 100% 70%
+  proseQuote: hslToRgb(215, 20.2, 65.1), // --prose-quote: 215 20.2% 65.1%
+  proseQuoteBorder: hslToRgb(217, 32.6, 17.5), // --prose-quote-border: 217 32.6% 17.5%
+};
+
+// Light theme tokens (for potential future use)
+const lightTheme = {
+  background: hslToRgb(0, 0, 100), // --background: 0 0% 100%
+  foreground: hslToRgb(222, 84, 4.9), // --foreground: 222 84% 4.9%
+  card: hslToRgb(0, 0, 100), // --card: 0 0% 100%
+  cardForeground: hslToRgb(222, 84, 4.9), // --card-foreground: 222 84% 4.9%
+  popover: hslToRgb(0, 0, 100), // --popover: 0 0% 100%
+  popoverForeground: hslToRgb(222, 84, 4.9), // --popover-foreground: 222 84% 4.9%
+  primary: hslToRgb(222, 47.4, 11.2), // --primary: 222 47.4% 11.2%
+  primaryForeground: hslToRgb(210, 40, 98), // --primary-foreground: 210 40% 98%
+  secondary: hslToRgb(210, 40, 96.1), // --secondary: 210 40% 96.1%
+  secondaryForeground: hslToRgb(222, 47.4, 11.2), // --secondary-foreground: 222 47.4% 11.2%
+  muted: hslToRgb(210, 40, 96.1), // --muted: 210 40% 96.1%
+  mutedForeground: hslToRgb(215, 16.3, 46.9), // --muted-foreground: 215 16.3% 46.9%
+  accent: hslToRgb(210, 40, 96.1), // --accent: 210 40% 96.1%
+  accentForeground: hslToRgb(222, 47.4, 11.2), // --accent-foreground: 222 47.4% 11.2%
+  destructive: hslToRgb(0, 84.2, 60.2), // --destructive: 0 84.2% 60.2%
+  destructiveForeground: hslToRgb(210, 40, 98), // --destructive-foreground: 210 40% 98%
+  border: hslToRgb(214.3, 31.8, 91.4), // --border: 214.3 31.8% 91.4%
+  input: hslToRgb(214.3, 31.8, 91.4), // --input: 214.3 31.8% 91.4%
+  ring: hslToRgb(222, 84, 4.9), // --ring: 222 84% 4.9%
+  proseBody: hslToRgb(222, 47.4, 11.2), // --prose-body: 222 47.4% 11.2%
+  proseHeading: hslToRgb(222, 47.4, 11.2), // --prose-heading: 222 47.4% 11.2%
+  proseLinks: hslToRgb(240, 60, 50), // --prose-links: 240 60% 50%
+  proseBold: hslToRgb(222, 47.4, 11.2), // --prose-bold: 222 47.4% 11.2%
+  proseCode: hslToRgb(240, 50, 45), // --prose-code: 240 50% 45%
+  proseQuote: hslToRgb(215, 20.2, 65.1), // --prose-quote: 215 20.2% 65.1%
+  proseQuoteBorder: hslToRgb(214.3, 31.8, 91.4), // --prose-quote-border: 214.3 31.8% 91.4%
 };
 
 export async function GET(request: NextRequest) {
@@ -57,13 +107,10 @@ export async function GET(request: NextRequest) {
       searchParams.get("description") || "Developer & Designer";
     const date = searchParams.get("date") || "";
     const tags = searchParams.get("tags")?.split(",") || [];
+    const theme = searchParams.get("theme") || "dark"; // Allow theme switching
 
-    // Fetch Inter font
-    // const interRegular = await fetch(
-    //   new URL(
-    //     "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-    //   )
-    // );
+    // Select theme based on parameter (defaulting to dark)
+    const selectedTheme = theme === "light" ? lightTheme : darkTheme;
 
     return new ImageResponse(
       (
@@ -75,8 +122,8 @@ export async function GET(request: NextRequest) {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: `rgb(${darkTheme.background.r}, ${darkTheme.background.g}, ${darkTheme.background.b})`,
-            backgroundImage: `radial-gradient(circle at 25px 25px, rgba(${darkTheme.muted.r}, ${darkTheme.muted.g}, ${darkTheme.muted.b}, 0.3) 2%, transparent 0%), radial-gradient(circle at 75px 75px, rgba(${darkTheme.accent.r}, ${darkTheme.accent.g}, ${darkTheme.accent.b}, 0.2) 2%, transparent 0%)`,
+            backgroundColor: `rgb(${selectedTheme.background.r}, ${selectedTheme.background.g}, ${selectedTheme.background.b})`,
+            backgroundImage: `radial-gradient(circle at 25px 25px, rgba(${selectedTheme.muted.r}, ${selectedTheme.muted.g}, ${selectedTheme.muted.b}, 0.3) 2%, transparent 0%), radial-gradient(circle at 75px 75px, rgba(${selectedTheme.accent.r}, ${selectedTheme.accent.g}, ${selectedTheme.accent.b}, 0.2) 2%, transparent 0%)`,
             backgroundSize: "100px 100px",
             fontFamily: "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
             position: "relative",
@@ -89,7 +136,7 @@ export async function GET(request: NextRequest) {
               left: 0,
               right: 0,
               bottom: 0,
-              background: `linear-gradient(135deg, rgba(${darkTheme.primary.r}, ${darkTheme.primary.g}, ${darkTheme.primary.b}, 0.1) 0%, rgba(${darkTheme.accent.r}, ${darkTheme.accent.g}, ${darkTheme.accent.b}, 0.15) 100%)`,
+              background: `linear-gradient(135deg, rgba(${selectedTheme.primary.r}, ${selectedTheme.primary.g}, ${selectedTheme.primary.b}, 0.1) 0%, rgba(${selectedTheme.accent.r}, ${selectedTheme.accent.g}, ${selectedTheme.accent.b}, 0.15) 100%)`,
             }}
           />
 
@@ -108,7 +155,7 @@ export async function GET(request: NextRequest) {
               style={{
                 fontSize: 32,
                 fontWeight: "700",
-                color: `rgb(${darkTheme.foreground.r}, ${darkTheme.foreground.g}, ${darkTheme.foreground.b})`,
+                color: `rgb(${selectedTheme.foreground.r}, ${selectedTheme.foreground.g}, ${selectedTheme.foreground.b})`,
                 fontFamily: "Georgia, Times, serif", // Serif font for GwdG
                 fontStyle: "italic",
               }}>
@@ -136,7 +183,7 @@ export async function GET(request: NextRequest) {
                   Math.max(32, (800 / title.length) * 1.2)
                 ),
                 fontWeight: "700",
-                color: `rgb(${darkTheme.foreground.r}, ${darkTheme.foreground.g}, ${darkTheme.foreground.b})`,
+                color: `rgb(${selectedTheme.proseHeading.r}, ${selectedTheme.proseHeading.g}, ${selectedTheme.proseHeading.b})`,
                 lineHeight: 1.2,
                 margin: "0 0 30px 0",
                 textAlign: "center",
@@ -153,7 +200,7 @@ export async function GET(request: NextRequest) {
               <p
                 style={{
                   fontSize: 24,
-                  color: `rgb(${darkTheme.mutedForeground.r}, ${darkTheme.mutedForeground.g}, ${darkTheme.mutedForeground.b})`,
+                  color: `rgb(${selectedTheme.mutedForeground.r}, ${selectedTheme.mutedForeground.g}, ${selectedTheme.mutedForeground.b})`,
                   lineHeight: 1.4,
                   margin: "0 0 40px 0",
                   textAlign: "center",
@@ -182,13 +229,13 @@ export async function GET(request: NextRequest) {
                   <div
                     key={index}
                     style={{
-                      background: `rgba(${darkTheme.accent.r}, ${darkTheme.accent.g}, ${darkTheme.accent.b}, 0.8)`,
-                      color: `rgb(${darkTheme.foreground.r}, ${darkTheme.foreground.g}, ${darkTheme.foreground.b})`,
+                      background: `rgba(${selectedTheme.secondary.r}, ${selectedTheme.secondary.g}, ${selectedTheme.secondary.b}, 0.8)`,
+                      color: `rgb(${selectedTheme.secondaryForeground.r}, ${selectedTheme.secondaryForeground.g}, ${selectedTheme.secondaryForeground.b})`,
                       padding: "8px 16px",
                       borderRadius: "20px",
                       fontSize: "16px",
                       fontWeight: "500",
-                      border: `1px solid rgba(${darkTheme.border.r}, ${darkTheme.border.g}, ${darkTheme.border.b}, 0.5)`,
+                      border: `1px solid rgba(${selectedTheme.border.r}, ${selectedTheme.border.g}, ${selectedTheme.border.b}, 0.5)`,
                       fontFamily:
                         "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
                     }}>
@@ -203,7 +250,7 @@ export async function GET(request: NextRequest) {
               <div
                 style={{
                   fontSize: 18,
-                  color: `rgb(${darkTheme.mutedForeground.r}, ${darkTheme.mutedForeground.g}, ${darkTheme.mutedForeground.b})`,
+                  color: `rgb(${selectedTheme.mutedForeground.r}, ${selectedTheme.mutedForeground.g}, ${selectedTheme.mutedForeground.b})`,
                   fontWeight: "500",
                   fontFamily:
                     "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
@@ -222,7 +269,7 @@ export async function GET(request: NextRequest) {
               width: "200px",
               height: "200px",
               borderRadius: "50%",
-              background: `radial-gradient(circle, rgba(${darkTheme.primary.r}, ${darkTheme.primary.g}, ${darkTheme.primary.b}, 0.15) 0%, transparent 70%)`,
+              background: `radial-gradient(circle, rgba(${selectedTheme.proseLinks.r}, ${selectedTheme.proseLinks.g}, ${selectedTheme.proseLinks.b}, 0.15) 0%, transparent 70%)`,
             }}
           />
           <div
@@ -233,7 +280,7 @@ export async function GET(request: NextRequest) {
               width: "150px",
               height: "150px",
               borderRadius: "50%",
-              background: `radial-gradient(circle, rgba(${darkTheme.accent.r}, ${darkTheme.accent.g}, ${darkTheme.accent.b}, 0.15) 0%, transparent 70%)`,
+              background: `radial-gradient(circle, rgba(${selectedTheme.accent.r}, ${selectedTheme.accent.g}, ${selectedTheme.accent.b}, 0.15) 0%, transparent 70%)`,
             }}
           />
         </div>
@@ -241,30 +288,6 @@ export async function GET(request: NextRequest) {
       {
         width: 1200,
         height: 630,
-        fonts: [
-          {
-            name: "Inter",
-            data: await fetch(
-              new URL(
-                "https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2",
-                import.meta.url
-              )
-            ).then((res) => res.arrayBuffer()),
-            style: "normal",
-            weight: 400,
-          },
-          {
-            name: "Inter",
-            data: await fetch(
-              new URL(
-                "https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuI6fAZ9hiJ-Ek-_EeA.woff2",
-                import.meta.url
-              )
-            ).then((res) => res.arrayBuffer()),
-            style: "normal",
-            weight: 700,
-          },
-        ],
       }
     );
   } catch (e: unknown) {
