@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Github, LinkedinIcon, Mail, Twitter, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import SocialLink from "@/components/social-link";
 import ProjectCard from "@/components/project-card";
 import NavBar from "@/components/nav-bar";
