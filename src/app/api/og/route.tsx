@@ -66,9 +66,7 @@ export async function GET(request: NextRequest) {
               style={{
                 fontSize: 18,
                 color: "#94a3b8",
-              }}>
-              blog.bhaskarjha.com
-            </div>
+              }}></div>
           </div>
 
           {/* Main content */}

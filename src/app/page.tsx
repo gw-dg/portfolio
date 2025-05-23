@@ -45,7 +45,7 @@ export const metadata: Metadata = {
             title: "Bhaskar Jha",
             description:
               "Developer & Designer passionate about creating beautiful experiences",
-            tags: "Developer,Designer,React,JavaScript,Machine Learning",
+            // tags: "Developer,Designer",
           }).toString()}`,
           process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
         ).toString(),
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
           title: "Bhaskar Jha",
           description:
             "Developer & Designer passionate about creating beautiful experiences",
-          tags: "Developer,Designer,React,JavaScript,Machine Learning",
+          // tags: "Developer,Designer,React,JavaScript,Machine Learning",
         }).toString()}`,
         process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
       ).toString(),

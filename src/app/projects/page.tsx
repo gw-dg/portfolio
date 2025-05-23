@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: new URL(
-          "/api/og?title=Projects&description=Web Development, Machine Learning, and IoT Solutions&tags=React,JavaScript,Python,Machine Learning,IoT",
+          "/api/og?title=Projects&description=Web Development, Machine Learning, and Embedded Systems",
           process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
         ).toString(),
         width: 1200,
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     creator: "@bhaskar__jha",
     images: [
       new URL(
-        "/api/og?title=Projects&description=Web Development, Machine Learning, and IoT Solutions&tags=React,JavaScript,Python,Machine Learning,IoT",
+        "/api/og?title=Projects&description=Web Development, Machine Learning, and Embedded Systems",
         process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
       ).toString(),
     ],
