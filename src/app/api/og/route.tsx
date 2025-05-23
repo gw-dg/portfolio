@@ -59,11 +59,11 @@ export async function GET(request: NextRequest) {
     const tags = searchParams.get("tags")?.split(",") || [];
 
     // Fetch Inter font
-    const interRegular = await fetch(
-      new URL(
-        "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      )
-    );
+    // const interRegular = await fetch(
+    //   new URL(
+    //     "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    //   )
+    // );
 
     return new ImageResponse(
       (
