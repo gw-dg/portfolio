@@ -12,12 +12,6 @@ import NavBar from "@/components/nav-bar";
 import Link from "next/link";
 import { ArrowLeft, ArrowUp } from "lucide-react";
 
-type Props = {
-  params: {
-    slug: string;
-  };
-};
-
 const options = {
   mdxOptions: {
     remarkPlugins: [remarkMath],
