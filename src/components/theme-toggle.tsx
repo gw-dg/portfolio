@@ -13,14 +13,6 @@ export default function ThemeToggle() {
     // console.log(`Toggling theme from ${resolvedTheme} to ${newTheme}`);
 
     setTheme(newTheme);
-
-    // Verify cookie after a brief delay
-    setTimeout(() => {
-      const cookies = document.cookie
-        .split(";")
-        .find((c) => c.trim().startsWith("theme="));
-      // console.log("Cookie after toggle:", cookies);
-    }, 100);
   };
 
   return (
