@@ -106,6 +106,76 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//linkedin.com" />
         <link rel="dns-prefetch" href="//twitter.com" />
 
+        {/* Theme script - runs before page renders to prevent flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  function getCookie(name) {
+                    if (typeof document === 'undefined') return null;
+                    const nameEQ = name + "=";
+                    const ca = document.cookie.split(";");
+                    for (let i = 0; i < ca.length; i++) {
+                      let c = ca[i];
+                      while (c.charAt(0) === " ") c = c.substring(1, c.length);
+                      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+                    }
+                    return null;
+                  }
+
+                  function getSystemTheme() {
+                    if (typeof window !== 'undefined' && window.matchMedia) {
+                      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                    }
+                    return 'dark';
+                  }
+
+                  function resolveTheme(theme) {
+                    if (theme === 'system') {
+                      return getSystemTheme();
+                    }
+                    return theme === 'dark' || theme === 'light' ? theme : 'dark';
+                  }
+
+                  // Get stored theme from cookie only
+                  let storedTheme = getCookie('theme');
+
+                  // If no stored theme, default to dark
+                  if (!storedTheme || (storedTheme !== 'dark' && storedTheme !== 'light' && storedTheme !== 'system')) {
+                    storedTheme = 'dark';
+                  }
+
+                  // Resolve the final theme
+                  const resolvedTheme = resolveTheme(storedTheme);
+                  
+                  // Apply theme immediately to prevent flash
+                  if (document.documentElement) {
+                    document.documentElement.classList.remove('light', 'dark');
+                    document.documentElement.classList.add(resolvedTheme);
+                    document.documentElement.setAttribute('data-theme', resolvedTheme);
+                    document.documentElement.style.colorScheme = resolvedTheme;
+                  }
+
+                } catch (error) {
+                  // If anything fails, apply dark theme as fallback
+                  console.warn('Theme script error:', error);
+                  try {
+                    if (document.documentElement) {
+                      document.documentElement.classList.remove('light', 'dark');
+                      document.documentElement.classList.add('dark');
+                      document.documentElement.setAttribute('data-theme', 'dark');
+                      document.documentElement.style.colorScheme = 'dark';
+                    }
+                  } catch (e) {
+                    console.warn('Failed to apply fallback theme:', e);
+                  }
+                }
+              })();
+            `,
+          }}
+        />
+
         {/* Structured Data for SEO */}
         <script
           type="application/ld+json"

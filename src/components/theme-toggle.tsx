@@ -7,7 +7,20 @@ export default function ThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
 
   const toggleTheme = () => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+    const newTheme = resolvedTheme === "dark" ? "light" : "dark";
+
+    // Debug log to verify (remove in production)
+    // console.log(`Toggling theme from ${resolvedTheme} to ${newTheme}`);
+
+    setTheme(newTheme);
+
+    // Verify cookie after a brief delay
+    setTimeout(() => {
+      const cookies = document.cookie
+        .split(";")
+        .find((c) => c.trim().startsWith("theme="));
+      // console.log("Cookie after toggle:", cookies);
+    }, 100);
   };
 
   return (
@@ -17,7 +30,10 @@ export default function ThemeToggle() {
                  bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] 
                  hover:bg-[hsl(var(--muted))] dark:hover:bg-[hsl(var(--accent))] 
                  border border-[hsl(var(--border))] transition-colors"
-      aria-label="Toggle theme">
+      aria-label={`Switch to ${
+        resolvedTheme === "dark" ? "light" : "dark"
+      } theme`}
+      title={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} theme`}>
       {resolvedTheme === "dark" ? (
         <Sun className="h-5 w-5" />
       ) : (

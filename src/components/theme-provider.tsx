@@ -14,25 +14,46 @@ type ThemeProviderProps = {
 type ThemeProviderState = {
   theme: Theme;
   setTheme: (theme: Theme) => void;
-  resolvedTheme: "dark" | "light"; // Add resolved theme for consistent checking
+  resolvedTheme: "dark" | "light";
 };
 
 const initialState: ThemeProviderState = {
-  theme: "system",
+  theme: "dark",
   setTheme: () => null,
-  resolvedTheme: "dark", // Default to dark if not yet resolved
+  resolvedTheme: "dark",
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
+// Cookie utility functions
+const setCookie = (name: string, value: string, days: number = 365) => {
+  if (typeof document === "undefined") return;
+  const expires = new Date();
+  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+};
+
+const getCookie = (name: string): string | null => {
+  if (typeof document === "undefined") return null;
+  const nameEQ = name + "=";
+  const ca = document.cookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === " ") c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+};
+
 export function ThemeProvider({
   children,
-  defaultTheme = "system",
+  defaultTheme = "dark",
   storageKey = "theme",
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
   const [resolvedTheme, setResolvedTheme] = useState<"dark" | "light">("dark");
+  const [mounted, setMounted] = useState(false);
 
   // Function to determine the actual theme based on system preference
   const resolveTheme = (themeValue: Theme): "dark" | "light" => {
@@ -42,25 +63,51 @@ export function ThemeProvider({
           ? "dark"
           : "light";
       }
-      return "dark"; // Default to dark when window is not available
+      return "dark";
     }
     return themeValue;
   };
 
-  useEffect(() => {
-    // Only access localStorage after component has mounted (client-side)
-    const storedTheme = localStorage.getItem(storageKey) as Theme;
-    if (storedTheme) {
-      setTheme(storedTheme);
-      setResolvedTheme(resolveTheme(storedTheme));
-    } else {
-      // If no stored theme, initialize with default
-      setResolvedTheme(resolveTheme(defaultTheme));
+  // Function to update document class
+  const updateDocumentClass = (themeToApply: "dark" | "light") => {
+    if (typeof window !== "undefined") {
+      const root = window.document.documentElement;
+      root.classList.remove("light", "dark");
+      root.classList.add(themeToApply);
+      root.setAttribute("data-theme", themeToApply);
+      root.style.colorScheme = themeToApply;
     }
-  }, [storageKey, defaultTheme]);
+  };
 
+  // Initialize theme from cookie on mount
   useEffect(() => {
-    // Listen for system theme changes
+    const storedTheme = getCookie(storageKey) as Theme;
+
+    if (
+      storedTheme &&
+      (storedTheme === "dark" ||
+        storedTheme === "light" ||
+        storedTheme === "system")
+    ) {
+      setTheme(storedTheme);
+      const resolved = resolveTheme(storedTheme);
+      setResolvedTheme(resolved);
+      updateDocumentClass(resolved);
+    } else {
+      // First time visitor - set dark as default and save to cookie
+      setTheme("dark");
+      setResolvedTheme("dark");
+      setCookie(storageKey, "dark");
+      updateDocumentClass("dark");
+    }
+
+    setMounted(true);
+  }, [storageKey]);
+
+  // Listen for system theme changes when theme is "system"
+  useEffect(() => {
+    if (!mounted) return;
+
     if (theme === "system" && typeof window !== "undefined") {
       const systemThemeMediaQuery = window.matchMedia(
         "(prefers-color-scheme: dark)"
@@ -76,37 +123,34 @@ export function ThemeProvider({
       return () =>
         systemThemeMediaQuery.removeEventListener("change", updateSystemTheme);
     }
-  }, [theme]);
+  }, [theme, mounted]);
 
-  // Function to update document class
-  const updateDocumentClass = (themeToApply: "dark" | "light") => {
-    if (typeof window !== "undefined") {
-      const root = window.document.documentElement;
-
-      // First remove both classes
-      root.classList.remove("light", "dark");
-
-      // Then add the appropriate class
-      root.classList.add(themeToApply);
-
-      // Also set a data attribute for easier CSS targeting
-      root.setAttribute("data-theme", themeToApply);
-    }
-  };
-
+  // Update resolved theme when theme changes
   useEffect(() => {
-    // When theme changes, resolve and apply it
+    if (!mounted) return;
+
     const newResolvedTheme = resolveTheme(theme);
     setResolvedTheme(newResolvedTheme);
     updateDocumentClass(newResolvedTheme);
-  }, [theme]);
+  }, [theme, mounted]);
 
   const value = {
     theme,
     resolvedTheme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
-      setTheme(theme);
+    setTheme: (newTheme: Theme) => {
+      // Set cookie immediately and synchronously
+      setCookie(storageKey, newTheme);
+
+      // Update state
+      setTheme(newTheme);
+
+      // Force immediate DOM update
+      const resolved = resolveTheme(newTheme);
+      setResolvedTheme(resolved);
+      updateDocumentClass(resolved);
+
+      // Debug log
+      // console.log(`Theme provider: set ${newTheme}, resolved to ${resolved}`);
     },
   };
 
