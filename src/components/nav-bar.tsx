@@ -13,7 +13,7 @@ export default function NavBar() {
     { name: "Projects", href: "/projects" },
     {
       name: "Resume",
-      href: "https://drive.google.com/file/d/1qBWrBnLxzGau2YwkLf8PsMkTQ-_AwZtx/view?usp=sharing",
+      href: "https://drive.google.com/file/d/1yqF03HJhLFZVO5sI4z_6F8okjH9101c_/view?usp=sharing",
       external: true,
     },
   ];
