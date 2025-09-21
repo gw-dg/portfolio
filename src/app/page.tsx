@@ -9,13 +9,12 @@ import type { Metadata } from "next";
 // Metadata for the home page
 // Fixed metadata for the home page
 export const metadata: Metadata = {
-  title: "Bhaskar Jha - Developer & Designer",
+  title: "Bhaskar Jha - Developer",
   description:
-    "Passionate developer and designer focused on creating beautiful, functional experiences. Interested in data structures, algorithms, web development, deep learning, embedded systems, and competitive programming.",
+    "Passionate developer focused on creating beautiful, functional experiences. Interested in data structures, algorithms, web development, deep learning, embedded systems, and competitive programming.",
   keywords: [
     "Bhaskar Jha",
     "developer",
-    "designer",
     "web development",
     "React",
     "JavaScript",
@@ -35,31 +34,31 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "/",
     siteName: "Bhaskar Jha",
-    title: "Bhaskar Jha - Developer & Designer",
+    title: "Bhaskar Jha - Developer",
     description:
-      "Passionate developer and designer focused on creating beautiful, functional experiences.",
+      "Passionate developer focused on creating beautiful, functional experiences.",
     images: [
       {
         url: new URL(
           `/api/og?${new URLSearchParams({
             title: "Bhaskar Jha",
             description:
-              "Developer & Designer passionate about creating beautiful experiences",
+              "Developer passionate about creating beautiful experiences",
             // tags: "Developer,Designer",
           }).toString()}`,
           process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
         ).toString(),
         width: 1200,
         height: 630,
-        alt: "Bhaskar Jha - Developer & Designer",
+        alt: "Bhaskar Jha - Developer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bhaskar Jha - Developer & Designer",
+    title: "Bhaskar Jha - Developer",
     description:
-      "Passionate developer and designer focused on creating beautiful, functional experiences.",
+      "Passionate developer focused on creating beautiful, functional experiences.",
     creator: "@bhaskar__jha",
     site: "@bhaskar__jha",
     images: [
@@ -67,7 +66,7 @@ export const metadata: Metadata = {
         `/api/og?${new URLSearchParams({
           title: "Bhaskar Jha",
           description:
-            "Developer & Designer passionate about creating beautiful experiences",
+            "Developer passionate about creating beautiful experiences",
           // tags: "Developer,Designer,React,JavaScript,Machine Learning",
         }).toString()}`,
         process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
@@ -107,8 +106,8 @@ export default function Home() {
           </h1>
 
           <p className="mb-8 text-xl text-[hsl(var(--foreground))]">
-            Hey! I&apos;m a passionate developer and designer focused on
-            creating beautiful, functional experiences.
+            Hey! I&apos;m a passionate developer focused on creating beautiful,
+            functional experiences.
           </p>
 
           <div className="mb-8">
@@ -117,7 +116,7 @@ export default function Home() {
             </h2>
             <div className="flex items-center space-x-2">
               <span className="rounded-md bg-[hsl(var(--muted))] px-3 py-1 text-[hsl(var(--foreground))]">
-                Palanam Technologies
+                Appsecure Securities
               </span>
             </div>
           </div>

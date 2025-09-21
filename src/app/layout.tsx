@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
   ),
   title: {
-    default: "Bhaskar Jha - Developer & Designer",
+    default: "Bhaskar Jha - Developer",
     template: "%s | Bhaskar Jha",
   },
   description:
@@ -36,7 +36,6 @@ export const metadata: Metadata = {
     "Bhaskar Jha",
     "portfolio",
     "developer",
-    "designer",
     "web development",
     "React",
     "Next.js",
@@ -184,9 +183,9 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Person",
               name: "Bhaskar Jha",
-              jobTitle: "Developer & Designer",
+              jobTitle: "Developer",
               description:
-                "Passionate developer and designer focused on creating beautiful, functional experiences",
+                "Passionate developer focused on creating beautiful, functional experiences",
               url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
               sameAs: [
                 "https://github.com/gw-dg",

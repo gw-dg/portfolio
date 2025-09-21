@@ -23,8 +23,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const title = searchParams.get("title") || "Bhaskar Jha";
-    const description =
-      searchParams.get("description") || "Developer & Designer";
+    const description = searchParams.get("description") || "Developer";
     const date = searchParams.get("date") || "";
     const tags = searchParams.get("tags")?.split(",") || [];
 
@@ -107,7 +106,7 @@ export async function GET(request: NextRequest) {
               {title}
             </h1>
 
-            {description && description !== "Developer & Designer" && (
+            {description && description !== "Developer" && (
               <p
                 style={{
                   fontSize: 24,
